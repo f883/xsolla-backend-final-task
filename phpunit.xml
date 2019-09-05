@@ -1,0 +1,11 @@
+<phpunit>
+  <testsuites>
+    <testsuite name="unit_tests">
+      <directory>tests</directory>
+      <!-- <directory>Mor</directory> -->
+    </testsuite>
+    <!-- <testsuite name="Functional_Tests">
+      <directory>OtherTests</directory>
+    </testsuite> -->
+  </testsuites>
+</phpunit>
