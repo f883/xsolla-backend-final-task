@@ -19,6 +19,6 @@ $router->commit($app);
 // require __DIR__ . '/../src/models/AdminModel.php';
 
 
-// Register routes
+// Register Router
 
 $app->run();

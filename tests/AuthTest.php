@@ -13,7 +13,7 @@ class AuthTestCase extends TestCase
         require __DIR__ . '/../Dependencies.php';
 
         $this->app = new \Slim\App($container);
-        (new Routes())->commit($this->app);
+        (new Router())->commit($this->app);
     }
 
     public function testUsersGet() {

@@ -3,6 +3,12 @@
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
+$container['notFoundHandler'] = function ($c) {
+    return function ($request, $response) use ($c) {
+        return $response->withStatus(404)
+            ->write(json_encode(['error' => 'Page not found.']));
+    };
+};
 
 $container['entityManager'] = function ($container) {
     $isDevMode = true;
