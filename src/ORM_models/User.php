@@ -52,10 +52,10 @@ class User
     protected $tokenSalt;
 
     /**
-     * @Column(type="integer")
-     * @var integer
+     * @ManyToOne(targetEntity="UserRole", inversedBy="id")
+     * @var UserRole
      */
-    protected $isAdmin = false;
+    protected $role;
 
     /**
      * @OneToMany(targetEntity="Order", mappedBy="seller")
@@ -110,8 +110,11 @@ class User
         $this->passwordHash = $ph;
     }
 
-    public function setIsAdmin($isAdm){
-        $this->isAdmin = $isAdm;
+    public function getRole(){
+        return $this->role;
+    }
+    public function setRole($role){
+        $this->role = $role;
     }
 
     public function addItem($item){

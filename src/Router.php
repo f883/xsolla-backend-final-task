@@ -8,7 +8,7 @@ class Router{
     public function commit($app){
         
         // Auth middleware
-        $app->add('AuthMiddleware:dispatch');
+        $app->add('AuthValidator:dispatch');
 
         // Main API
         $app->group('/api', function () use ($app) {

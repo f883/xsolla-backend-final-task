@@ -1,23 +1,62 @@
-<?php 
+<?php
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
 class ExchangeController{
-    private $adminModel;
-    private $userModel;
-    private $commonModel;
+    private $exchangeInteractor;
 
-    public function __construct(AdminModel $adminModel, CommonModel $commonModel, UserModel $userModel){
-        $this->adminModel = $adminModel;
-        $this->commonModel = $commonModel;
-        $this->userModel = $userModel;
+    public function __construct(ExchangeInteractor $exchangeInteractor){
+        $this->exchangeInteractor = $exchangeInteractor;
     }
     
+    public function addItemToUser(Request $request, Response $response, $args)
+    {
+        $data = $request->getParsedBody();
+        $respCode = 200;
+        
+        $res = [];
+        $userId = $args['id'];
+        if (empty($data['item_type_id'])){
+            $respCode = 400;
+            $res = ['error' => 'Field [item_type_id] not found.'];
+        }
+        else {
+            if (!$this->checkIntValue($data['item_type_id'])){
+                $respCode = 400;
+                $res = ['error' => 'Wrong [item_type_id] value.'];
+            }
+            else{
+                if (!$this->checkIntValue($userId)){
+                    $respCode = 400;
+                    $res = ['error' => 'Wrong user id.'];
+                }
+                else{
+                    try{
+                        $success = $this->exchangeInteractor->depositItem($userId, $data['item_type_id']);
+                        if ($success){
+                            $res = ['ok' => 'true'];
+                        }
+                        else{
+                            $res = ['ok' => 'false'];
+                        }
+                    }
+                    catch(Exception $ex){
+                        $respCode = 400;
+                        $res = ['error' => $ex->getMessage()];
+                    }
+                }
+            }
+        }
+
+        $response->getBody()->write(json_encode($res));
+        return $response->withStatus($respCode);
+    }
+
     public function getStatus(Request $request, Response $response, $args)
     {
         $res = [];
-        $status = $this->commonModel->getExchangeStatus();
+        $status = $this->exchangeInteractor->getExchangeStatus();
 
         $res = [
             'ok' => 'true',
@@ -49,7 +88,7 @@ class ExchangeController{
                 $respCode = 400;
             }
             else{
-                if ($this->adminModel->setExchangeFee($fee)){
+                if ($this->exchangeInteractor->setExchangeFee($fee)){
                     $res = ['ok' => 'true'];
                 }
                 else{
@@ -67,7 +106,7 @@ class ExchangeController{
     {
         $res = [
             'ok' => 'true',
-            'balance' => $this->adminModel->getExchangeBalance()
+            'balance' => $this->exchangeInteractor->getExchangeBalance()
         ];
 
         $response->getBody()->write(json_encode($res));
@@ -95,7 +134,7 @@ class ExchangeController{
                     $toDate = DateTime::createFromFormat('d-m-Y', $data['to_date']);
 
                     $res = [
-                        'earn' => $this->adminModel->getEarn($fromDate, $toDate),
+                        'earn' => $this->exchangeInteractor->getEarn($fromDate, $toDate),
                         'from_date' => $fromDate->format('d-m-Y'),
                         'to_date' => $toDate->format('d-m-Y')
                     ];
@@ -131,7 +170,7 @@ class ExchangeController{
             else{
                 if ($this->checkIntValue($userId)){
                     try{
-                        $this->adminModel->depositMoney($userId, $value);
+                        $this->exchangeInteractor->depositMoney($userId, $value);
                         $res = ['ok' => 'true'];
                     }
                     catch(Exception $ex){
@@ -170,7 +209,7 @@ class ExchangeController{
             else{
                 if ($this->checkIntValue($userId)){
                     try{
-                        $this->adminModel->withdrawMoney($userId, $value);
+                        $this->exchangeInteractor->withdrawMoney($userId, $value);
                         $res = ['ok' => 'true'];
                     }
                     catch(Exception $ex){

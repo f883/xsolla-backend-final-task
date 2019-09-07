@@ -18,7 +18,7 @@ $container['entityManager'] = function ($container) {
         'dbname' => 'postgres',
         'user' => 'postgres',
         'password' => 'GKknYWzq3S',
-        'host' => '192.168.1.101',
+        'host' => '192.168.1.102',
         // 'host' => '192.168.1.110',
         'driver' => 'pdo_pgsql',
         'port' => '32768'
@@ -27,22 +27,32 @@ $container['entityManager'] = function ($container) {
     return EntityManager::create($conn, $config);
 };
 
-$container['Auth'] = function ($container) {
-    return new Auth($container->get('entityManager'));
+$container['repository'] = function ($container){
+    return new Repository($container->get('entityManager'));
 };
 
-$container['AuthMiddleware'] = function ($container) {
-    return new AuthMiddleware($container->get('Auth'));
+$container['AuthInteractor'] = function ($container) {
+    return new AuthInteractor($container->get('repository'));
 };
 
-$container['AdminModel'] = function ($container) {
-    return new AdminModel($container->get('entityManager'));
+$container['AuthValidator'] = function ($container) {
+    return new AuthValidator($container->get('AuthInteractor'));
 };
-$container['CommonModel'] = function ($container) {
-    return new CommonModel($container->get('entityManager'));
+
+$container['ExchangeInteractor'] = function ($container) {
+    return new ExchangeInteractor($container->get('repository'));
 };
-$container['UserModel'] = function ($container) {
-    return new UserModel($container->get('entityManager'));
+$container['ItemsInteractor'] = function ($container) {
+    return new ItemsInteractor($container->get('repository'));
+};
+$container['OrdersInteractor'] = function ($container) {
+    return new OrdersInteractor($container->get('repository'));
+};
+$container['TopInteractor'] = function ($container) {
+    return new TopInteractor($container->get('repository'));
+};
+$container['UsersInteractor'] = function ($container) {
+    return new UsersInteractor($container->get('repository'));
 };
 
 $container['AuthController'] = function ($container) {
@@ -52,28 +62,28 @@ $container['AuthController'] = function ($container) {
         $container->get('Auth')
     );
 };
-$container['ExchangeController'] = function ($container) { // TODO:
+$container['ExchangeController'] = function ($container) {
     return new ExchangeController(
         $container->get('AdminModel'),
         $container->get('CommonModel'),
         $container->get('UserModel')
     );
 };
-$container['ItemsController'] = function ($container) { // TODO:
+$container['ItemsController'] = function ($container) {
     return new ItemsController(
         $container->get('AdminModel'),
         $container->get('CommonModel'),
         $container->get('UserModel')
     );
 };
-$container['OrdersController'] = function ($container) { // TODO:
+$container['OrdersController'] = function ($container) {
     return new OrdersController(
         $container->get('AdminModel'),
         $container->get('CommonModel'),
         $container->get('UserModel')
     );
 };
-$container['TopController'] = function ($container) { // TODO:
+$container['TopController'] = function ($container) {
     return new TopController(        
         $container->get('AdminModel'),
         $container->get('CommonModel'),

@@ -1,17 +1,13 @@
-<?php 
+<?php
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
 class AuthController{
-    private $commonModel;
-    private $userModel;
-    private $auth;
+    private $authInteractor;
 
-    public function __construct(CommonModel $commonModel, UserModel $userModel, Auth $auth){
-        $this->commonModel = $commonModel;
-        $this->userModel = $userModel;
-        $this->auth = $auth;
+    public function __construct(AuthInteractor $authInteractor){
+        $this->authInteractor = $authInteractor;
     }
 
     public function register(Request $request, Response $response, $args){
@@ -22,7 +18,7 @@ class AuthController{
         if (!empty($data['name']) && !empty($data['password'])){
             $userId = '';
             try{
-                $userId = $this->userModel->register($data['name'], $data['password']);
+                $userId = $this->authInteractor->register($data['name'], $data['password']);
                 $res = [
                     'ok' => 'true'
                 ];
@@ -60,7 +56,7 @@ class AuthController{
         if (!empty($data['name']) && !empty($data['password'])){
             $userId = '';
             try{
-                $userId = $this->commonModel->login($data['name'], $data['password']);
+                $userId = $this->authInteractor->login($data['name'], $data['password']);
             }
             catch (Exception $ex){
                 $res = [
@@ -104,7 +100,7 @@ class AuthController{
         }
         else{
             try{
-                if ($this->auth->invalidateTokens($data['user_id'])){
+                if ($this->authInteractor->invalidateTokens($data['user_id'])){
                     $res = ['ok' => 'true'];
                 }
                 else{
@@ -134,7 +130,7 @@ class AuthController{
         
         $authRes = [];
         try{
-            $userId = $this->auth->validateRefreshToken($data[Auth::$REFRESH_TOKEN]);
+            $userId = $this->authInteractor->validateRefreshToken($data[Auth::$REFRESH_TOKEN]);
             if (!empty($userId)){
                 $tokens = $this->auth->generateTokens($userId);
                 $res = [

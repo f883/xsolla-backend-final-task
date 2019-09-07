@@ -23,19 +23,19 @@ class Order
     protected $closed;
 
     /**
-     * @Column(type="string")
+     * @ManyToOne(targetEntity="OrderStatus", inversedBy="id")
      */
     protected $status;
+
+    /**
+     * @ManyToOne(targetEntity="OrderType", inversedBy="id")
+     */
+    protected $type;
 
     /**
      * @Column(type="float")
      */
     protected $price;
-
-    /**
-     * @Column(type="string")
-     */
-    protected $type;
 
     /**
      * @ManyToOne(targetEntity="Item", inversedBy="orders")

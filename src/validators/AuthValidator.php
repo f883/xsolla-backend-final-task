@@ -1,6 +1,6 @@
 <?php
 
-class AuthMiddleware{
+class AuthValidator{
     private $auth;
     private $entityManager;
 
@@ -12,7 +12,7 @@ class AuthMiddleware{
         '/api/auth/updatetoken'
     ];
 
-    public function __construct(Auth $auth){
+    public function __construct(AuthInteractor $auth){
         $this->auth = $auth;
     }
 
@@ -21,7 +21,7 @@ class AuthMiddleware{
         $response = $response->withHeader('Content-Type', 'application/json');
 
         // Доступ без наличия токена
-        if (in_array($path, AuthMiddleware::$allowedPaths)){
+        if (in_array($path, AuthValidator::$allowedPaths)){
             $response = $next($request, $response);
             return $response;
         }

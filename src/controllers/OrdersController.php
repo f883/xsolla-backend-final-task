@@ -1,17 +1,13 @@
-<?php 
+<?php
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
 class OrdersController{
-    private $adminModel;
-    private $userModel;
-    private $commonModel;
+    private $ordersInteractor;
 
-    public function __construct(AdminModel $adminModel, CommonModel $commonModel, UserModel $userModel){
-        $this->adminModel = $adminModel;
-        $this->commonModel = $commonModel;
-        $this->userModel = $userModel;
+    public function __construct(OrdersInteractor $ordersInteractor){
+        $this->ordersInteractor = $ordersInteractor;
     }    
     public function getOrdersToBuy(Request $request, Response $response, $args)
     {
@@ -21,7 +17,7 @@ class OrdersController{
         if (empty($data['filter'])){
             $data['filter'] = [];
         }
-        $orders = $this->userModel->getSalesList($data['filter']);
+        $orders = $this->ordersInteractor->getSalesList($data['filter']);
         $res = ['ok' => 'true', 'sell_orders' => $orders];
         $response->getBody()->write(json_encode($res));
         return $response->withStatus($respCode);
@@ -49,7 +45,7 @@ class OrdersController{
             }
                 else{
                     try{
-                        $orderId = $this->userModel->postBuyOrder($data['item_id'], $data['user_id'], $data['price']);
+                        $orderId = $this->ordersInteractor->postBuyOrder($data['item_id'], $data['user_id'], $data['price']);
                         $res = ['ok' => 'true', 'order_id' => $orderId];
                     }
                     catch(Exception $ex){
@@ -72,7 +68,7 @@ class OrdersController{
         if (empty($data['filter'])){
             $data['filter'] = [];
         }
-        $orders = $this->userModel->getBuysList($data['filter']);
+        $orders = $this->ordersInteractor->getBuysList($data['filter']);
         $res = ['ok' => 'true', 'buy_orders' => $orders];
         $response->getBody()->write(json_encode($res));
         return $response->withStatus($respCode);
@@ -100,7 +96,7 @@ class OrdersController{
             }
                 else{
                     try{
-                        $orderId = $this->userModel->postSellOrder($data['item_id'], $data['user_id'], $data['price']);
+                        $orderId = $this->ordersInteractor->postSellOrder($data['item_id'], $data['user_id'], $data['price']);
                         $res = ['ok' => 'true', 'order_id' => $orderId];
                     }
                     catch(Exception $ex){
@@ -136,7 +132,7 @@ class OrdersController{
             if ($changes){
                 try
                 {
-                    $this->userModel->updateOrder($args['id'], $price);
+                    $this->ordersInteractor->updateOrder($args['id'], $price);
                 }
                 catch(Exception $ex){                
                     $res = ['error' => $ex->getMessage()];
@@ -164,7 +160,7 @@ class OrdersController{
         }
         else{
             try{
-                $this->userModel->cancellOrder($args['id']);
+                $this->ordersInteractor->cancellOrder($args['id']);
                 $res = ['ok' => 'true'];
             }
             catch(Exception $ex){                

@@ -1,24 +1,20 @@
-<?php 
+<?php
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
 class ItemsController{
-    private $adminModel;
-    private $userModel;
-    private $commonModel;
-
-    public function __construct(AdminModel $adminModel, CommonModel $commonModel, UserModel $userModel){
-        $this->adminModel = $adminModel;
-        $this->commonModel = $commonModel;
-        $this->userModel = $userModel;
+    private $itemsInteractor;
+    
+    public function __construct(ItemsInteractor $itemsInteractor){
+        $this->itemsInteractor = $itemsInteractor;
     }
 
     public function getItemTypes(Request $request, Response $response, $args)
     {
         $respCode = 200;
         $res = [
-            'types' => $this->commonModel->getItemTypesList()
+            'types' => $this->itemsInteractor->getItemTypesList()
         ];
 
         $response->getBody()->write(json_encode($res));
@@ -37,7 +33,7 @@ class ItemsController{
         }
         else{
             try{
-                $res = ['item_type' => $this->commonModel->getItemType($id)];  
+                $res = ['item_type' => $this->itemsInteractor->getItemType($id)];  
             }
             catch(Exception $ex){
                 $res = ['error' => $ex->getMessage()];
@@ -61,7 +57,7 @@ class ItemsController{
         }
         else{
             try{
-                $res = ['item_type' => $this->commonModel->getItem($id)];  
+                $res = ['item_type' => $this->itemsInteractor->getItem($id)];  
             }
             catch(Exception $ex){
                 $res = ['error' => $ex->getMessage()];
@@ -77,7 +73,7 @@ class ItemsController{
     {
         $respCode = 200;
         $res = [
-            'items' => $this->commonModel->getItemsList()
+            'items' => $this->itemsInteractor->getItemsList()
         ];
 
         $response->getBody()->write(json_encode($res));
@@ -100,7 +96,7 @@ class ItemsController{
         }
         else{
             try{
-                $this->adminModel->createItemType($data['name']);
+                $this->itemsInteractor->createItemType($data['name']);
                 $res = ['ok' => 'true'];
             }
             catch(Exception $ex){

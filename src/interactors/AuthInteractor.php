@@ -2,13 +2,43 @@
 
 use \Firebase\JWT\JWT;
 
-class Auth{
+class AuthInteractor{
     public static $ACCESS_TOKEN = 'access_token';
     public static $REFRESH_TOKEN = 'refresh_token';
-    private $entityManager;
+    private $repository;
     
-    public function __construct(Doctrine\ORM\EntityManager $entityManager){
-        $this->entityManager = $entityManager;
+    public function __construct(Repository $repository){
+        $this->repository = $repository;
+    }
+
+    // Регистрация
+    public function register($username, $password){
+        $hash = password_hash($password, PASSWORD_BCRYPT);
+
+        $user = $this->repository->getUserByName($username);
+
+        if (!empty($user)){
+            throw new Exception('User with name [' . $username . '] already exists.');
+        }     
+
+        $user = new User();
+        $user->setName($username);
+        $user->setPasswordHash($hash);
+
+        $this->repository->saveEntity($user);
+        return $user->getId();
+    } 
+
+    // Войти в стистему
+    public function login($username, $password){
+        $hash = password_hash($password, PASSWORD_BCRYPT);
+
+        $user = $this->repository->getUserByName($username);
+
+        if (empty($user)){
+            throw new Exception('User with name [' . $username . '] not found.');
+        }     
+        return $user->getId();
     }
 
     public function generateTokens(string $userId){
@@ -61,7 +91,7 @@ class Auth{
     }
 
     public function validateAccessToken($jwt){
-        $user = $this->getUserByAccessToken($jwt);
+        $user = $this->repository->getUserByAccessToken($jwt);
         if (empty($user)){
             throw new Exception('Invalid access token.');
         }
@@ -76,7 +106,7 @@ class Auth{
     }
 
     public function validateRefreshToken($jwt){
-        $user = $this->getUserByRefreshToken($jwt);
+        $user = $this->repository->getUserByRefreshToken($jwt);
         if (empty($user)){
             throw new Exception('Invalid access token.');
         }
@@ -91,7 +121,7 @@ class Auth{
     }
 
     public function invalidateTokens($userId){
-        $user = $this->getUserById($userId);
+        $user = $this->repository->getUserById($userId);
         if (empty($user)){
             throw new Exception('User not found.');
         }
@@ -100,32 +130,6 @@ class Auth{
         $user->setRefreshTokenHash(null);
         $this->saveObject($user);
         return true;
-    }
-
-    private function saveObject($obj){
-        $this->entityManager->persist($obj);
-        $this->entityManager->flush();
-    }
-
-    private function getUserById($id){
-        return $this->entityManager->getRepository('User')
-        ->findOneBy(
-            ['id' => $id]
-        );
-    }
-
-    private function getUserByAccessToken($token){
-        return $this->entityManager->getRepository('User')
-        ->findOneBy(
-            ['accessTokenHash' => $this->hash($token)]
-        );
-    }
-
-    private function getUserByRefreshToken($token){
-        return $this->entityManager->getRepository('User')
-        ->findOneBy(
-            ['refreshTokenHash' => $this->hash($token)]
-        );
     }
 
     private function hash($value){

@@ -1,22 +1,18 @@
-<?php 
+<?php
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
 class TopController{
-    private $adminModel;
-    private $userModel;
-    private $commonModel;
+    private $topInteractor;
 
-    public function __construct(AdminModel $adminModel, CommonModel $commonModel, UserModel $userModel){
-        $this->adminModel = $adminModel;
-        $this->commonModel = $commonModel;
-        $this->userModel = $userModel;
+    public function __construct(TopInteractor $topInteractor){
+        $this->topInteractor = $topInteractor;
     }
 
     public function getTopItems(Request $request, Response $response, $args)
     {
-        $items = $this->commonModel->getTopSallingItems();
+        $items = $this->topInteractor->getTopSallingItems();
 
         $res = [
             'ok' => 'true',
@@ -37,7 +33,7 @@ class TopController{
             $res = ['error' => 'Filter not set.'];
         }
         else{
-            $users = $this->commonModel->getTopUsers($data['filter']);
+            $users = $this->topInteractor->getTopUsers($data['filter']);
     
             $res = [
                 'ok' => 'true',
