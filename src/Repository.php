@@ -143,30 +143,16 @@ class Repository{
            ['item' => $itemId, 'type' => $type]
         );
     }
-
-    public function 
-
-    public function 
-
-    public function 
-
-    public function 
-
-    public function 
-
-
-
-    // getOrderBySecondMember
-    // getUserByName
-    // 
-    // 
-    // 
-    // 
-    // 
-    // 
-    // 
-    // 
-    // 
-
-
+    public function getOrderBySecondMember($secondMemberId){
+        return $this->entityManager->getRepository('Order')
+        ->findBy(
+            ['secondMember' => $secondMemberId]
+        );
+    }
+    public function getUserByName($name){
+        return $this->entityManager->getRepository('User')
+        ->findOneBy(
+            ['name' => $name]
+        );
+    }
 }
