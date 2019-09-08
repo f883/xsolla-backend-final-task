@@ -15,13 +15,12 @@ $container['entityManager'] = function ($container) {
     $config = Setup::createAnnotationMetadataConfiguration(array("src/ORM_models"), $isDevMode);
     
     $conn = array(
-        'dbname' => 'postgres',
-        'user' => 'postgres',
-        'password' => 'GKknYWzq3S',
-        'host' => '192.168.1.102',
-        // 'host' => '192.168.1.110',
+        'dbname' => getenv('DB_NAME'),
+        'user' => getenv('DB_USER'),
+        'password' => getenv('DB_PASSWORD'),
+        'host' => getenv('DB_HOST'),
         'driver' => 'pdo_pgsql',
-        'port' => '32768'
+        'port' => getenv('DB_PORT')
     );
     
     return EntityManager::create($conn, $config);

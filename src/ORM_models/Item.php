@@ -80,4 +80,10 @@ class Item
     public function getType(){
         return $this->type;
     }
+    public function getLastSaleDate(){
+        return $this->lastSaleDate;
+    }
+    public function setLastSaleDate($date){
+        $this->lastSaleDate = $date;
+    }
 }

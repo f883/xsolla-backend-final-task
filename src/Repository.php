@@ -136,6 +136,18 @@ class Repository{
             ['type' => $type->getId()]
         );
     }
+    public function getOrdersByTypeWithSort($typeValue, $sortBy){
+        $type = $this->entityManager->getRepository('OrderType')
+        ->findOneBy(
+            ['value' => $typeValue]
+        );
+
+        return $this->entityManager->getRepository('Order')
+        ->findBy(
+            ['type' => $type->getId()],
+            [$sortBy => 'ASC']
+        );
+    }
     public function getOrderById($id){
         return $this->entityManager->getRepository('Order')
         ->findOneBy(

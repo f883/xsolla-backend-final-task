@@ -10,44 +10,39 @@ class UsersInteractor{
     // Получить историю действий пользователя (фильтры по типу ордера)
     public function getUserHistory($userId, $filter = null){
         $user = $this->repository->getUserById($userId);
-
         if (empty($user)){
             throw new Exception('User not found.');
         }
-
+        
+        $filled = false;
         $res = [];
         if (in_array('sell', $filter)){
+            $filled = true;
             $userOrders = $this->repository->getOrdersByOwnerId($userId);
-
-            $tt = [];
             foreach($userOrders as $order){
-                $tt[] = [
-                    'item' => $order->getItem(),
-                    'posted date' => $order->getCreated(),
-                    'type' => $order->getType(),
-                    'owner' => $order->getOwner(),
-                ];
+                $res[] = mapOrder($order);
             };
-            $res = array_merge($res, $tt);
         }
 
         if (in_array('buy', $filter)){
+            $filled = true;
             $userSecondDealMember = $this->repository->getOrderBySecondMember($userId);
-            
-            $tt = [];
             foreach($userSecondDealMember as $order){
-                $tt[] = [
-                    'item' => $order->getItem(),
-                    'posted date' => $order->getCreated(),
-                    'type' => $order->getType(),
-                    'owner' => $order->getOwner(),
-                ];
+                $res[] = mapOrder($order);
             };
-            $res = array_merge($res, $tt);
         }
 
-        return $res;
+        return ['ok' => 'true', 'orders' => $res];
     } 
+
+    private function mapOrder($order){
+        return [
+            'item' => $order->getItem(),
+            'posted date' => $order->getCreated(),
+            'type' => $order->getType(),
+            'owner' => $order->getOwner(),
+        ];
+    }
 
     // Начислить предмет пользователю
     public function depositItem($requesterId, $userId, $itemTypeId){

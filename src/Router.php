@@ -15,54 +15,54 @@ class Router{
 
             // Authentification
             $app->group('/auth', function () use ($app) {
-                $app->post('/register', 'AuthPresenter:register'); // TODO: tests
-                $app->post('/login', 'AuthPresenter:login'); // TODO: tests
-                $app->post('/logout', 'AuthPresenter:logout'); // TODO: tests
-                $app->post('/updatetoken', 'AuthPresenter:updateToken'); // TODO: tests
+                $app->post('/register', 'AuthPresenter:register');
+                $app->post('/login', 'AuthPresenter:login');  
+                $app->post('/logout', 'AuthPresenter:logout');  
+                $app->post('/updatetoken', 'AuthPresenter:updateToken');  
             });
             
             // Exchange
             $app->group('/exchange', function () use ($app) {
-                $app->get('', 'ExchangePresenter:getStatus'); // TODO: tests
-                $app->post('/fee', 'ExchangePresenter:setFee'); // TODO: tests
-                $app->get('/balance', 'ExchangePresenter:getBalance'); // TODO: tests
-                $app->get('/earn', 'ExchangePresenter:getEarn'); // TODO: tests
-                $app->put('/deposit/user/{id}', 'ExchangePresenter:depositMoney'); // TODO: tests
-                $app->put('/withdraw/user/{id}', 'ExchangePresenter:withdrawMoney'); // TODO: tests
+                $app->get('', 'ExchangePresenter:getStatus');  
+                $app->post('/fee', 'ExchangePresenter:setFee');  
+                $app->get('/balance', 'ExchangePresenter:getBalance');  
+                $app->get('/earn', 'ExchangePresenter:getEarn');  
+                $app->put('/deposit/user/{id}', 'ExchangePresenter:depositMoney');  
+                $app->put('/withdraw/user/{id}', 'ExchangePresenter:withdrawMoney');  
             });
 
             // Items
             $app->group('/items', function () use ($app) {
-                $app->get('/types', 'ItemsPresenter:getItemTypes'); // TODO: tests
-                $app->get('/types/{id}', 'ItemsPresenter:getItemType'); // TODO: tests
-                $app->get('/', 'ItemsPresenter:getItems'); // TODO: tests
-                $app->get('/{id}', 'ItemsPresenter:getItem'); // TODO: tests
-                $app->post('/types', 'ItemsPresenter:addItemType'); // TODO: tests
+                $app->get('/types', 'ItemsPresenter:getItemTypes');  
+                $app->get('/types/{id}', 'ItemsPresenter:getItemType');  
+                $app->get('/', 'ItemsPresenter:getItems');  
+                $app->get('/{id}', 'ItemsPresenter:getItem');  
+                $app->post('/types', 'ItemsPresenter:addItemType');  
             });
 
             // Orders
             $app->group('/orders', function () use ($app) {
-                $app->get('/buy', 'OrdersPresenter:getOrdersToBuy'); // TODO: tests
-                $app->post('/buy', 'OrdersPresenter:postOrderToBuy'); // TODO: tests
-                $app->get('/sell', 'OrdersPresenter:getOrdersToSell'); // TODO: tests
-                $app->post('/sell', 'OrdersPresenter:postOrderToSell'); // TODO: tests
-                $app->put('/{id}', 'OrdersPresenter:updateOrder'); // TODO: tests
-                $app->delete('/{id}', 'OrdersPresenter:cancelOrder'); // TODO: tests
-                $app->post('/{id}/buy', 'OrdersPresenter:buyItem'); // FIXME: tests
-                $app->post('/{id}/sell', 'OrdersPresenter:sellItem'); // FIXME: tests
+                $app->get('/buy', 'OrdersPresenter:getOrdersToBuy');  
+                $app->post('/buy', 'OrdersPresenter:postOrderToBuy');  
+                $app->get('/sell', 'OrdersPresenter:getOrdersToSell');  
+                $app->post('/sell', 'OrdersPresenter:postOrderToSell');  
+                $app->put('/{id}', 'OrdersPresenter:updateOrder');  
+                $app->delete('/{id}', 'OrdersPresenter:cancelOrder');  
+                $app->post('/{id}/buy', 'OrdersPresenter:buyItem');
+                $app->post('/{id}/sell', 'OrdersPresenter:sellItem');
             });
 
             // Top items/orders/etc
             $app->group('/top', function () use ($app) {
-                $app->get('/items', 'TopPresenter:getTopItems'); // TODO: tests
-                $app->get('/users', 'TopPresenter:getTopUsers'); // TODO: tests
+                $app->get('/items', 'TopPresenter:getTopItems');  
+                $app->get('/users', 'TopPresenter:getTopUsers');  
             });
 
             // Users
             $app->group('/users', function () use ($app) {
-                $app->get('/{id}', 'UsersPresenter:getUser'); // TODO: tests
-                $app->post('/{id}/items', 'UsersPresenter:addItemToUser'); // TODO: tests
-                $app->get('/{id}/history', 'UsersPresenter:getUserHistory'); // TODO: tests
+                $app->get('/{id}', 'UsersPresenter:getUser');  
+                $app->post('/{id}/items', 'UsersPresenter:addItemToUser');  
+                $app->get('/{id}/history', 'UsersPresenter:getUserHistory');  
             });
         });
     }

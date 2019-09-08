@@ -16,7 +16,15 @@ class OrdersInteractor{
         if ($order->getStatus()->getValue() != OrderStatus::$ACTIVE){
             throw new Exception('Wrong order status.');          
         }
+
         $item = $order->getItem();
+
+        $nowMinusDay = new DateTime();
+        $nowMinusDay = date('Y-m-d', strtotime($nowMinusDay . ' - 1 days'));
+        if ($item->getLastSaleDate() > $nowMinusDay){
+            throw new Exception('Last buy was less than 24 hours ago.');
+        } 
+
         $seller = $order->getOwner();
         $buyer = $this->repository->getUserById($userId);
         if ($buyer->getBalance() < $order->getPrice()){
@@ -37,6 +45,7 @@ class OrdersInteractor{
         $log->setDate(new DataTime());
         $log->setExchangeEarn($fee);
         $log->setOrder($order);
+        $item->setLastSaleDate(new DateTime());
         $this->repository->saveEntity($log);
         $this->repository->saveEntity($buyer);
         $this->repository->saveEntity($seller);
@@ -54,6 +63,13 @@ class OrdersInteractor{
         if ($order->getStatus()->getValue() != OrderStatus::$ACTIVE){
             throw new Exception('Wrong order status.');          
         }
+
+        $nowMinusDay = new DateTime();
+        $nowMinusDay = date('Y-m-d', strtotime($nowMinusDay . ' - 1 days'));
+        if ($item->getLastSaleDate() > $nowMinusDay){
+            throw new Exception('Last buy was less than 24 hours ago.');
+        }
+
         $item = $order->getItem();
         $buyer = $order->getOwner();
         $seller = $this->repository->getUserById($userId);
@@ -82,6 +98,7 @@ class OrdersInteractor{
         $log->setDate(new DataTime());
         $log->setExchangeEarn($fee);
         $log->setOrder($order);
+        $item->setLastSaleDate(new DateTime());
         $this->repository->saveEntity($log);
         $this->repository->saveEntity($buyer);
         $this->repository->saveEntity($seller);
@@ -175,15 +192,35 @@ class OrdersInteractor{
 
     // Получить список ордеров на покупку (фильтры по предмету, по пользователю)
     public function getSalesList($filter){
-        // TODO: использование фильтра
-        $orders = $this->repository->getOrdersByType(OrderType::$SELL);
+        $orders = [];
+        switch ($filter){
+            case 'users':
+                $orders = $this->repository->getOrdersByTypeWithSort(OrderType::$SELL, 'owner');
+                break;
+            case 'items':
+                $orders = $this->repository->getOrdersByTypeWithSort(OrderType::$SELL, 'item');
+                break;
+            default:
+                $orders = $this->repository->getOrdersByType(OrderType::$SELL);
+                break;
+        }
         return $orders;
     }
 
     // Получить список ордеров на продажу (фильтры по предмету, по пользователю)
     public function getBuysList($filter){
-        // TODO: использование фильтра
-        $orders = $this->repository->getOrdersByType(OrderType::$BUY);
+        $orders = [];
+        switch ($filter){
+            case 'users':
+                $orders = $this->repository->getOrdersByTypeWithSort(OrderType::$BUY, 'owner');
+                break;
+            case 'items':
+                $orders = $this->repository->getOrdersByTypeWithSort(OrderType::$BUY, 'item');
+                break;
+            default:
+                $orders = $this->repository->getOrdersByType(OrderType::$BUY);
+                break;
+        }
         return $orders;
     } 
 }
