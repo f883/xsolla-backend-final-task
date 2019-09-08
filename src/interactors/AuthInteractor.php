@@ -20,13 +20,10 @@ class AuthInteractor{
             throw new Exception('User with name [' . $username . '] already exists.');
         }     
 
-        $userRole = new UserRole();
-        $userRole->setRole(UserRole::$USER);
-
         $user = new User();
         $user->setName($username);
         $user->setPasswordHash($hash);
-        $user->setRole($userRole);
+        $user->setRole($this->repository->getOrCreateUserRoleByValue(UserRole::$USER));
 
         $this->repository->saveEntity($userRole);
         $this->repository->saveEntity($user);

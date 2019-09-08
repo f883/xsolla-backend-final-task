@@ -200,4 +200,17 @@ class Repository{
         }
         return $tp;
     }
+    public function getOrCreateUserRoleByValue($value){
+        $ur = $this->entityManager->getRepository('UserRole')
+        ->findOneBy(
+            ['value' => $value]
+        );
+
+        if (empty($ur)){
+            $ur = new UserRole();
+            $ur->setValue($value);
+            $this->saveEntity($ur);
+        }
+        return $ur;
+    }
 }

@@ -3,9 +3,6 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$dotenv = Dotenv\Dotenv::create(__DIR__ . '/../');
-$dotenv->load();
-
 $container = new \Slim\Container();
 require __DIR__ . '/../Dependencies.php';
 

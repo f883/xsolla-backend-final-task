@@ -3,6 +3,9 @@
 use Doctrine\ORM\Tools\Setup;
 use Doctrine\ORM\EntityManager;
 
+$dotenv = Dotenv\Dotenv::create(__DIR__);
+$dotenv->load();
+
 $container['notFoundHandler'] = function ($c) {
     return function ($request, $response) use ($c) {
         return $response->withStatus(404)
