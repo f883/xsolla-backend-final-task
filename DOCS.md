@@ -56,7 +56,8 @@ POST `/api/auth/register`
 Ответ:
 ```
 {
-  "ok": "true"
+  "ok": "true",
+  "user_id": 43
 }
 ```
 
@@ -102,25 +103,42 @@ POST `/api/auth/updatetoken`
 
 Пример запроса:
 ```
-
+{
+	"refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoicmVmcmVzaF90b2tlbiIsInVzZXJJZCI6IjQyIiwiaXNzIjoiaHR0cDpcL1wvZXhhbXBsZS5vcmciLCJhdWQiOiJodHRwOlwvXC9leGFtcGxlLmNvbSIsImlhdCI6MTU2NzkwMDgwMCwibmJmIjoxNTY3OTAwODAwLCJleHAiOjE1NzA0OTI4MDB9.8jxm1KzX6AikMXh7XNHY2ipuHHQQyt50kLms4MIlJiY"
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true",
+  "data": {
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDIiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.ce_CPm80jD1n13mh3-3puKAl2Ra34aO6sXyJagEqz4c",
+    "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoicmVmcmVzaF90b2tlbiIsInVzZXJJZCI6IjQyIiwiaXNzIjoiaHR0cDpcL1wvZXhhbXBsZS5vcmciLCJhdWQiOiJodHRwOlwvXC9leGFtcGxlLmNvbSIsImlhdCI6MTU2NzkwMDgwMCwibmJmIjoxNTY3OTAwODAwLCJleHAiOjE1NzA0OTI4MDB9.SP9VTYC4jW_uFmPTMlnOD5R3BH7SEP-JyJWFt5e1aSs"
+  }
+}
 ```
 
 
 ## Биржа
 ### Получить статус биржи
-GET `/api/exchange/`
+GET `/api/exchange`
 
 Пример запроса:
 ```
-
+{
+"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDIiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.fIrt4VKRCBVQBdanIw_Y79vmf6KG7cg41wtERk_PWJA"
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true",
+  "data": {
+    "fee": 0.05,
+    "users_count": 4,
+    "orders_count": 4
+  }
+}
 ```
 
 ### Установить налог на покупки
@@ -128,11 +146,18 @@ POST `/api/exchange/fee`
 
 Пример запроса:
 ```
-
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDIiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.fIrt4VKRCBVQBdanIw_Y79vmf6KG7cg41wtERk_PWJA",
+	"data": {
+		"fee": "0.1"
+	}
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true"
+}
 ```
 
 ### Получить баланс биржи
@@ -140,11 +165,16 @@ GET `/api/exchange/balance`
 
 Пример запроса:
 ```
-
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDIiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.fIrt4VKRCBVQBdanIw_Y79vmf6KG7cg41wtERk_PWJA"
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true",
+  "balance": 0
+}
 ```
 
 ### Получить прибыль биржи за заданный период времени
@@ -152,11 +182,21 @@ GET `/api/exchange/earn`
 
 Пример запроса:
 ```
-
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDIiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.fIrt4VKRCBVQBdanIw_Y79vmf6KG7cg41wtERk_PWJA",
+	"data":{
+		"from_date" : "20-01-2018",		
+		"to_date" : "21-02-2019"
+	}
+}
 ```
 Ответ:
 ```
-
+{
+  "earn": 0,
+  "from_date": "20-01-2018",
+  "to_date": "21-02-2019"
+}
 ```
 
 ### Добавить деньги на баланс пользователя
@@ -164,11 +204,19 @@ PUT `/api/exchange/deposit/user/{id}`
 
 Пример запроса:
 ```
-
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM",
+	"data":{
+		"value" : "20"
+	}
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true",
+  "balance": 40
+}
 ```
 
 ### Снять деньги с баланса пользователя
@@ -176,11 +224,19 @@ PUT `/api/exchange/withdraw/user/{id}`
 
 Пример запроса:
 ```
-
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM",
+	"data":{
+		"value" : "20"
+	}
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true",
+  "balance": 0
+}
 ```
 
 ## Предметы
@@ -189,47 +245,98 @@ GET `/api/items/types`
 
 Пример запроса:
 ```
-
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM"
+}
 ```
 Ответ:
 ```
-
+{
+  "types": [
+    {
+      "id": 23,
+      "name": "testss_312312sad31232s23"
+    },
+    {
+      "id": 24,
+      "name": "testss_312312sad3s123s2s23"
+    },
+    {
+      "id": 25,
+      "name": "testss_3123s12sad3s123s2s23"
+    },
+    {
+      "id": 26,
+      "name": "testss_3123s12sasadasdd3s123s2s23"
+    }
+  ]
+}
 ```
 
 ### Получить описание типа предмета по идентификатору
 GET `/api/items/types/{id}`
 
 Пример запроса:
+`http://192.168.1.111:8000/api/items/types/23`
 ```
-
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM"
+}
 ```
 Ответ:
 ```
-
+{
+  "item_type": {
+    "id": 23,
+    "name": "testss_312312sad31232s23"
+  }
+}
 ```
 
 ### Получить список существующих предметов
 GET `/api/items/`
 
 Пример запроса:
+`http://192.168.1.111:8000/api/items/`
 ```
-
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM"
+}
 ```
 Ответ:
 ```
-
+{
+  "items": [
+    {
+      "id": 20,
+      "description": null,
+      "type_id": 24,
+      "owner_id": 40
+    }
+  ]
+}
 ```
 
 ### Получить список существующих предметов по идентификатору
 GET `/api/items/{id}`
 
 Пример запроса:
+`http://192.168.1.111:8000/api/items/20`
 ```
-
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM"
+}
 ```
 Ответ:
 ```
-
+{
+  "item_type": {
+    "id": 20,
+    "description": null,
+    "type_id": 24,
+    "owner_id": 40
+  }
+}
 ```
 
 ### Добавить новый тип предметов

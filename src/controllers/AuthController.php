@@ -20,7 +20,8 @@ class AuthController{
             try{
                 $userId = $this->authInteractor->register($data['name'], $data['password']);
                 $res = [
-                    'ok' => 'true'
+                    'ok' => 'true',
+                    'user_id' => $userId
                 ];
             }
             catch (Exception $ex){
@@ -124,15 +125,15 @@ class AuthController{
         $respCode = 200;
         $res = [];
 
-        if (empty($data[Auth::$REFRESH_TOKEN])){
-            $res = ['error' => 'Field [' . Auth::$REFRESH_TOKEN . '] not found.'];
+        if (empty($data[AuthInteractor::$REFRESH_TOKEN])){
+            $res = ['error' => 'Field [' . AuthInteractor::$REFRESH_TOKEN . '] not found.'];
         }
         
         $authRes = [];
         try{
-            $userId = $this->authInteractor->validateRefreshToken($data[Auth::$REFRESH_TOKEN]);
+            $userId = $this->authInteractor->validateRefreshToken($data[AuthInteractor::$REFRESH_TOKEN]);
             if (!empty($userId)){
-                $tokens = $this->auth->generateTokens($userId);
+                $tokens = $this->authInteractor->generateTokens($userId);
                 $res = [
                     'ok' => 'true',
                     'data' => $tokens

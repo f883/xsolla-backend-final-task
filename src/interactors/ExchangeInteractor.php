@@ -69,7 +69,7 @@ class ExchangeInteractor{
         $user->setBalance($balance + $value);
         
         $this->repository->saveEntity($user);
-        return true;
+        return $user->getBalance();
     }
 
     // Списать с баланса пользователя
@@ -87,13 +87,13 @@ class ExchangeInteractor{
 
         $user->setBalance($balance - $value);
         $this->repository->saveEntity($user);
-        return true;
+        return $user->getBalance();
     } 
 
     // Получить текущее состояние биржи 
     // (комиссия, количество предметов, количество ордеров)
     public function getExchangeStatus(){
-        $fee = $this->repository->getExchange->getFee();
+        $fee = $this->repository->getExchange()->getFee();
         $usersCount = $this->repository->getUsersCount();
         $ordersCount = $this->repository->getOrdersCount();
         

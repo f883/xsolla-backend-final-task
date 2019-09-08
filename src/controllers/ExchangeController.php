@@ -75,7 +75,7 @@ class ExchangeController{
 
         if (empty($data['fee'])){
             $res = [
-                'error' => 'Fee not set.'
+                'error' => 'Field [fee] not set.'
             ];
             $respCode = 400;
         }
@@ -133,11 +133,24 @@ class ExchangeController{
                     $fromDate = DateTime::createFromFormat('d-m-Y', $data['from_date']);// '15-02-2009');
                     $toDate = DateTime::createFromFormat('d-m-Y', $data['to_date']);
 
-                    $res = [
-                        'earn' => $this->exchangeInteractor->getEarn($fromDate, $toDate),
-                        'from_date' => $fromDate->format('d-m-Y'),
-                        'to_date' => $toDate->format('d-m-Y')
-                    ];
+                    if ($fromDate === false){
+                        $res = ['error' => 'Wrong [from_date] date format. Date should be in format [d-m-Y], e.g. [15-02-2009]'];
+                        $respCode = 400;
+                    }
+                    else{
+                        if ($toDate === false){
+                            $res = ['error' => 'Wrong [to_date] date format. Date should be in format [d-m-Y], e.g. [15-02-2009]'];
+                            $respCode = 400;
+                        }
+                        else{
+                            $res = [
+                                'earn' => $this->exchangeInteractor->getEarn($fromDate, $toDate),
+                                'from_date' => $fromDate->format('d-m-Y'),
+                                'to_date' => $toDate->format('d-m-Y')
+                            ];
+                        }
+                    }
+
                 }
                 catch(Exception $ex){
                     $res = ['error' => $ex->getMessage()];
@@ -157,12 +170,12 @@ class ExchangeController{
         $res = [];
         $userId = $args['id'];
 
-        if (empty($data->value)){
+        if (empty($data['value'])){
             $res = ['error' => 'Field [value] not set.'];
             $respCode = 400;
         }
         else{
-            $value = $data->value;
+            $value = $data['value'];
             if (!$this->checkMoneyValue($value)){
                 $res = ['error' => 'Wrong [value] value.'];
                 $respCode = 400;
@@ -170,8 +183,8 @@ class ExchangeController{
             else{
                 if ($this->checkIntValue($userId)){
                     try{
-                        $this->exchangeInteractor->depositMoney($userId, $value);
-                        $res = ['ok' => 'true'];
+                        $balance = $this->exchangeInteractor->depositMoney($userId, $value);
+                        $res = ['ok' => 'true', 'balance' => $balance];
                     }
                     catch(Exception $ex){
                         $res = ['error' => $ex->getMessage()];
@@ -209,8 +222,8 @@ class ExchangeController{
             else{
                 if ($this->checkIntValue($userId)){
                     try{
-                        $this->exchangeInteractor->withdrawMoney($userId, $value);
-                        $res = ['ok' => 'true'];
+                        $balance = $this->exchangeInteractor->withdrawMoney($userId, $value);
+                        $res = ['ok' => 'true', 'balance' => $balance];
                     }
                     catch(Exception $ex){
                         $res = ['error' => $ex->getMessage()];

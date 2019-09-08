@@ -25,7 +25,7 @@ class Exchange
      * @Column(type="float")
      * @var float
      */
-    protected $balance;
+    protected $balance = 0;
 
     public function __construct()
     {

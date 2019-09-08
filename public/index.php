@@ -14,6 +14,15 @@ $app = new \Slim\App($container);
 $router = new Router();
 $router->commit($app);
 
+// TODO: куда-то убрать в настройки
+$repos = $container->get('repository');
+if (empty($repos->getExchange())){
+    $exchange = new Exchange();
+    $exchange->setFee(0.05);
+    $exchange->setBalance(0);
+    $repos->saveEntity($exchange);
+}
+
 // Register middleware
 // require __DIR__ . '/../src/models/UserModel.php';
 // require __DIR__ . '/../src/models/AdminModel.php';
