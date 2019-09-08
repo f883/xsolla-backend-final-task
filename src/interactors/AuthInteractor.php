@@ -54,7 +54,7 @@ class AuthInteractor{
         $timestampAccessExpires = strtotime($dateAccessExpires->format('Y-m-d'));
         
         $accessToken = array(
-            "type" => Auth::$ACCESS_TOKEN,
+            "type" => AuthInteractor::$ACCESS_TOKEN,
             "userId" => $userId,
             "iss" => $issuer,
             "aud" => $audience,
@@ -68,7 +68,7 @@ class AuthInteractor{
         $timestampRefreshExpires = strtotime($dateRefreshExpires->format('Y-m-d'));
 
         $refreshToken = array(
-            "type" => Auth::$REFRESH_TOKEN,
+            "type" => AuthInteractor::$REFRESH_TOKEN,
             "userId" => $userId,
             "iss" => $issuer,
             "aud" => $audience,
@@ -78,26 +78,26 @@ class AuthInteractor{
         );
         
         $salt = $this->generateRandomString(40);
-        $tokens[Auth::$ACCESS_TOKEN] = JWT::encode($accessToken, $salt);
-        $tokens[Auth::$REFRESH_TOKEN] = JWT::encode($refreshToken, $salt);
+        $tokens[AuthInteractor::$ACCESS_TOKEN] = JWT::encode($accessToken, $salt);
+        $tokens[AuthInteractor::$REFRESH_TOKEN] = JWT::encode($refreshToken, $salt);
         
-        $user = $this->getUserById($userId);
+        $user = $this->repository->getUserById($userId);
         $user->setTokenSalt($salt);
-        $user->setAccessTokenHash($this->hash($tokens[Auth::$ACCESS_TOKEN]));
-        $user->setRefreshTokenHash($this->hash($tokens[Auth::$REFRESH_TOKEN]));
-        $this->saveObject($user);
+        $user->setAccessTokenHash($this->hash($tokens[AuthInteractor::$ACCESS_TOKEN]));
+        $user->setRefreshTokenHash($this->hash($tokens[AuthInteractor::$REFRESH_TOKEN]));
+        $this->repository->saveEntity($user);
 
         return $tokens;
     }
 
     public function validateAccessToken($jwt){
-        $user = $this->repository->getUserByAccessToken($jwt);
+        $user = $this->repository->getUserByAccessToken($this->hash($jwt));
         if (empty($user)){
             throw new Exception('Invalid access token.');
         }
         $salt = $user->getTokenSalt();
         $decoded = JWT::decode($jwt, $salt, array('HS256'));
-        if ($decoded->type === Auth::$ACCESS_TOKEN){
+        if ($decoded->type === AuthInteractor::$ACCESS_TOKEN){
             return $user->getId();
         }
         else{
@@ -106,13 +106,13 @@ class AuthInteractor{
     }
 
     public function validateRefreshToken($jwt){
-        $user = $this->repository->getUserByRefreshToken($jwt);
+        $user = $this->repository->getUserByRefreshToken($this->hash($jwt));
         if (empty($user)){
             throw new Exception('Invalid access token.');
         }
         $salt = $user->getTokenSalt();
         $decoded = JWT::decode($jwt, $salt, array('HS256'));
-        if ($decoded->type === Auth::$REFRESH_TOKEN){
+        if ($decoded->type === AuthInteractor::$REFRESH_TOKEN){
             return $user->getId();
         }
         else{
@@ -128,7 +128,7 @@ class AuthInteractor{
         
         $user->setAccessTokenHash(null);
         $user->setRefreshTokenHash(null);
-        $this->saveObject($user);
+        $this->repository->saveEntity($user);
         return true;
     }
 

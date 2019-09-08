@@ -48,11 +48,16 @@ POST `/api/auth/register`
 Тело запроса должно содержать name и password.
 Пример запроса:
 ```
-
+{    
+	"name": "Vasya",
+	"password": "qwerqwer"
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true"
+}
 ```
 
 ### Вход в систему (получение токенов)
@@ -60,11 +65,20 @@ POST `/api/auth/login`
 
 Пример запроса:
 ```
-
+{    
+	"name": "Vasya",
+	"password": "qwerqwer"
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true",
+  "data": {
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDIiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.zUdqW2b7KCU40Y_ldudumLUOrTjqQ0Ux8HDTWULSCSE",
+    "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoicmVmcmVzaF90b2tlbiIsInVzZXJJZCI6IjQyIiwiaXNzIjoiaHR0cDpcL1wvZXhhbXBsZS5vcmciLCJhdWQiOiJodHRwOlwvXC9leGFtcGxlLmNvbSIsImlhdCI6MTU2NzkwMDgwMCwibmJmIjoxNTY3OTAwODAwLCJleHAiOjE1NzA0OTI4MDB9.CQoLUUfCCy2Juir5vxHGdPSeG7CGpjcIqMuxeYWo-2s"
+  }
+}
 ```
 
 ### Выход из системы (инвалидация всех токенов)
@@ -72,11 +86,15 @@ POST `/api/auth/logout`
 
 Пример запроса:
 ```
-
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDIiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.zUdqW2b7KCU40Y_ldudumLUOrTjqQ0Ux8HDTWULSCSE"
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true"
+}
 ```
 
 ### Обновление access_token

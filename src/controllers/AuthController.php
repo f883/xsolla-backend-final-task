@@ -64,7 +64,7 @@ class AuthController{
                 ];
                 $respCode = 400;
             }
-            $tokens = $this->auth->generateTokens($userId);
+            $tokens = $this->authInteractor->generateTokens($userId);
             $res = [
                 'ok' => 'true',
                 'data' => $tokens

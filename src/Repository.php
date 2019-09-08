@@ -25,16 +25,16 @@ class Repository{
             ['owner' => $id]
         );
     }
-    public function getUserByAccessToken($token){
+    public function getUserByAccessToken($tokenHash){
         return $this->entityManager->getRepository('User')
         ->findOneBy(
-            ['accessTokenHash' => $this->hash($token)]
+            ['accessTokenHash' => $tokenHash]
         );
     }
-    public function getUserByRefreshToken($token){
+    public function getUserByRefreshToken($tokenHash){
         return $this->entityManager->getRepository('User')
         ->findOneBy(
-            ['refreshTokenHash' => $this->hash($token)]
+            ['refreshTokenHash' => $tokenHash]
         );
     }
     public function getUsersCount(){
