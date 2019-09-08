@@ -558,6 +558,44 @@ DELETE `/api/orders/{id}`
 }
 ```
 
+#### Продать товар по предложению
+POST `/api/orders/{id}/sell`
+
+Пример запроса:
+
+`http://192.168.1.111:8000/api/orders/buy`
+
+```
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDAiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.KB1cuzaozJcPeU23GfELeiFfXXUaJwt5OcI6fRO-QgQ"
+}
+```
+Ответ:
+```
+{
+  "ok": "true"
+}
+```
+
+#### Купить товар по предложению
+POST `/api/orders/{id}/buy`
+
+Пример запроса:
+
+`http://192.168.1.111:8000/api/orders/buy`
+
+```
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDAiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.KB1cuzaozJcPeU23GfELeiFfXXUaJwt5OcI6fRO-QgQ"
+}
+```
+Ответ:
+```
+{
+  "ok": "true"
+}
+```
+
 
 ### Топ популярности
 #### Список пользователей с сортировкой по количеству вещей, либо по сумме на балансе
