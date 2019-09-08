@@ -32,6 +32,7 @@ class AuthTestCase extends TestCase
         $this->app->getContainer()['request'] = $req;
         $response = $this->app->run(true);
         $this->assertSame($response->getStatusCode(), 500);
-        $this->assertSame((string)$response->getBody(), "Hello, Todo");
+        print_r($response->getBody());
+        $this->assertSame((string)$response->getBody(), "text");
     } 
 }
