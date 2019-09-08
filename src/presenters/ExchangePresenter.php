@@ -61,6 +61,7 @@ class ExchangePresenter{
 
     public function getBalance(Request $request, Response $response, $args)
     {
+        $respCode = 200;
         $data = $request->getParsedBody();
         $res = [
             'ok' => 'true',
@@ -68,7 +69,7 @@ class ExchangePresenter{
         ];
 
         $response->getBody()->write(json_encode($res));
-        return $response->withStatus(200);
+        return $response->withStatus($respCode);
     }
 
     public function getEarn(Request $request, Response $response, $args)

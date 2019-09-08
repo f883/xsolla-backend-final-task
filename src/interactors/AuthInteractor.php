@@ -25,7 +25,6 @@ class AuthInteractor{
         $user->setPasswordHash($hash);
         $user->setRole($this->repository->getOrCreateUserRoleByValue(UserRole::$USER));
 
-        $this->repository->saveEntity($userRole);
         $this->repository->saveEntity($user);
         return $user->getId();
     } 

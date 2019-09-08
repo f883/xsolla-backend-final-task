@@ -62,6 +62,9 @@ Access_token не требуется для запросов по следующ
 POST `/api/auth/register`
 Тело запроса должно содержать name и password.
 Пример запроса:
+
+`http://192.168.1.111:8000/api/auth/register`
+
 ```
 {    
 	"name": "Vasya",
@@ -72,7 +75,7 @@ POST `/api/auth/register`
 ```
 {
   "ok": "true",
-  "user_id": 43
+  "user_id": 45
 }
 ```
 
@@ -80,6 +83,9 @@ POST `/api/auth/register`
 POST `/api/auth/login`
 
 Пример запроса:
+
+`http://192.168.1.111:8000/api/auth/login`
+
 ```
 {    
 	"name": "Vasya",
@@ -101,6 +107,9 @@ POST `/api/auth/login`
 POST `/api/auth/logout`
 
 Пример запроса:
+
+`http://192.168.1.111:8000/api/auth/logout`
+
 ```
 {
 	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDIiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.zUdqW2b7KCU40Y_ldudumLUOrTjqQ0Ux8HDTWULSCSE"
@@ -117,6 +126,9 @@ POST `/api/auth/logout`
 POST `/api/auth/updatetoken`
 
 Пример запроса:
+
+`http://192.168.1.111:8000/api/auth/updatetoken`
+
 ```
 {
 	"refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoicmVmcmVzaF90b2tlbiIsInVzZXJJZCI6IjQyIiwiaXNzIjoiaHR0cDpcL1wvZXhhbXBsZS5vcmciLCJhdWQiOiJodHRwOlwvXC9leGFtcGxlLmNvbSIsImlhdCI6MTU2NzkwMDgwMCwibmJmIjoxNTY3OTAwODAwLCJleHAiOjE1NzA0OTI4MDB9.8jxm1KzX6AikMXh7XNHY2ipuHHQQyt50kLms4MIlJiY"
@@ -139,19 +151,17 @@ POST `/api/auth/updatetoken`
 GET `/api/exchange`
 
 Пример запроса:
-```
-{
-"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDIiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.fIrt4VKRCBVQBdanIw_Y79vmf6KG7cg41wtERk_PWJA"
-}
-```
+
+`http://192.168.1.111:8000/api/exchange`
+
 Ответ:
 ```
 {
   "ok": "true",
   "data": {
     "fee": 0.05,
-    "users_count": 4,
-    "orders_count": 4
+    "users_count": 1,
+    "orders_count": 0
   }
 }
 ```
@@ -160,6 +170,9 @@ GET `/api/exchange`
 POST `/api/exchange/fee`
 
 Пример запроса:
+
+`http://192.168.1.111:8000/api/exchange/fee`
+
 ```
 {
 	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDIiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.fIrt4VKRCBVQBdanIw_Y79vmf6KG7cg41wtERk_PWJA",
@@ -179,6 +192,9 @@ POST `/api/exchange/fee`
 GET `/api/exchange/balance`
 
 Пример запроса:
+
+`http://192.168.1.111:8000/api/exchange/balance`
+
 ```
 {
 	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDIiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.fIrt4VKRCBVQBdanIw_Y79vmf6KG7cg41wtERk_PWJA"
@@ -196,6 +212,9 @@ GET `/api/exchange/balance`
 GET `/api/exchange/earn`
 
 Пример запроса:
+
+`http://192.168.1.111:8000/api/exchange/earn`
+
 ```
 {
 	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDIiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.fIrt4VKRCBVQBdanIw_Y79vmf6KG7cg41wtERk_PWJA",
@@ -218,6 +237,9 @@ GET `/api/exchange/earn`
 PUT `/api/exchange/deposit/user/{id}`
 
 Пример запроса:
+
+`http://192.168.1.111:8000/api/exchange/deposit/user/1`
+
 ```
 {
 	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM",
@@ -238,6 +260,9 @@ PUT `/api/exchange/deposit/user/{id}`
 PUT `/api/exchange/withdraw/user/{id}`
 
 Пример запроса:
+
+`http://192.168.1.111:8000/api/exchange/withdraw/user/1`
+
 ```
 {
 	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM",
@@ -259,6 +284,9 @@ PUT `/api/exchange/withdraw/user/{id}`
 GET `/api/items/types`
 
 Пример запроса:
+
+`http://192.168.1.111:8000/api/items/types/1`
+
 ```
 {
 	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM"
@@ -725,6 +753,6 @@ GET `/api/users/{id}/history`
 ## Полезные команды
 Doctrine scheme update: `vendor/bin/doctrine orm:schema-tool:update --force`
 
-Run unit tests `./vendor/bin/phpunit --testsuite unit_tests`
+Run unit tests `./vendor/bin/phpunit --testsuite unit_tests` (Not yet implemented)
 
 Composer update autoload `composer dump-autoload -o`

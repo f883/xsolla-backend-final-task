@@ -126,10 +126,7 @@ class Repository{
         );
     }
     public function getOrdersByType($typeValue){
-        $type = $this->entityManager->getRepository('OrderType')
-        ->findOneBy(
-            ['value' => $typeValue]
-        );
+        $type = $this->getOrderTypeByNameCreateIfNotExists($typeValue);
 
         return $this->entityManager->getRepository('Order')
         ->findBy(
@@ -203,12 +200,12 @@ class Repository{
     public function getOrCreateUserRoleByValue($value){
         $ur = $this->entityManager->getRepository('UserRole')
         ->findOneBy(
-            ['value' => $value]
+            ['role' => $value]
         );
 
         if (empty($ur)){
             $ur = new UserRole();
-            $ur->setValue($value);
+            $ur->setRole($value);
             $this->saveEntity($ur);
         }
         return $ur;

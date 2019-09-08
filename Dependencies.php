@@ -6,6 +6,15 @@ use Doctrine\ORM\EntityManager;
 $dotenv = Dotenv\Dotenv::create(__DIR__);
 $dotenv->load();
 
+$container['notAllowedHandler'] = function ($container) {
+    return function ($request, $response, $methods) use ($container) {
+        $res = ['error' => 'Method not allowed.', 'allowed_methods' => $methods];
+        return $response->withStatus(405)
+        ->withHeader('Content-type', 'application/json')
+        ->write(json_encode($res));
+    };
+};
+
 $container['notFoundHandler'] = function ($c) {
     return function ($request, $response) use ($c) {
         return $response->withStatus(404)

@@ -10,6 +10,9 @@ class OrdersInteractor{
     // Купить товар по ордеру
     public function buyItem($userId, $orderId){
         $order = $this->repository->getOrderById($orderId);
+        if (empty($order)){
+            throw new Exception('Order not found.');          
+        }
         if ($order->getType()->getValue() != OrderType::$SELL){
             throw new Exception('Wrong order type.');          
         }
@@ -56,7 +59,9 @@ class OrdersInteractor{
     // Продать товар по ордеру
     public function sellItem($userId, $orderId){
         $order = $this->repository->getOrderById($orderId);
-
+        if (empty($order)){
+            throw new Exception('Order not found.');          
+        }
         if ($order->getType()->getValue() != OrderType::$BUY){
             throw new Exception('Wrong order type.');          
         }
