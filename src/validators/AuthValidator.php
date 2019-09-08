@@ -27,8 +27,8 @@ class AuthValidator{
         }
         else{
             $data = $request->getParsedBody();
-            if (!empty($data[Auth::$ACCESS_TOKEN])){
-                $accessToken = $data[Auth::$ACCESS_TOKEN];
+            if (!empty($data[AuthInteractor::$ACCESS_TOKEN])){
+                $accessToken = $data[AuthInteractor::$ACCESS_TOKEN];
                 if (empty($data['data'])){
                     $data['data'] = [];
                 }
@@ -47,7 +47,7 @@ class AuthValidator{
                 return $response;
             }
             else{
-                $res = ['error' => 'Field [' . Auth::$ACCESS_TOKEN . '] not found.'];
+                $res = ['error' => 'Field [' . AuthInteractor::$ACCESS_TOKEN . '] not found.'];
                 $response->write(json_encode($res));
                 return $response;
             }

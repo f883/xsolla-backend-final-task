@@ -57,42 +57,31 @@ $container['UsersInteractor'] = function ($container) {
 
 $container['AuthController'] = function ($container) {
     return new AuthController(
-        $container->get('CommonModel'),
-        $container->get('UserModel'),
-        $container->get('Auth')
+        $container->get('AuthInteractor')
     );
 };
 $container['ExchangeController'] = function ($container) {
     return new ExchangeController(
-        $container->get('AdminModel'),
-        $container->get('CommonModel'),
-        $container->get('UserModel')
+        $container->get('ExchangeInteractor')
     );
 };
 $container['ItemsController'] = function ($container) {
     return new ItemsController(
-        $container->get('AdminModel'),
-        $container->get('CommonModel'),
-        $container->get('UserModel')
+        $container->get('ItemsInteractor')
     );
 };
 $container['OrdersController'] = function ($container) {
     return new OrdersController(
-        $container->get('AdminModel'),
-        $container->get('CommonModel'),
-        $container->get('UserModel')
+        $container->get('OrdersInteractor')
     );
 };
 $container['TopController'] = function ($container) {
     return new TopController(        
-        $container->get('AdminModel'),
-        $container->get('CommonModel'),
-        $container->get('UserModel'));
+        $container->get('TopInteractor')
+    );
 };
 $container['UsersController'] = function ($container) {
     return new UsersController(
-        $container->get('AdminModel'),
-        $container->get('CommonModel'),
-        $container->get('UserModel')
+        $container->get('UsersInteractor')
     );
 };
