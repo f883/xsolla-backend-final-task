@@ -321,7 +321,9 @@ GET `/api/items/`
 GET `/api/items/{id}`
 
 Пример запроса:
+
 `http://192.168.1.111:8000/api/items/20`
+
 ```
 {
 	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM"
