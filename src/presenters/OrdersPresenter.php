@@ -3,7 +3,7 @@
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
-class OrdersController{
+class OrdersPresenter{
     private $ordersInteractor;
 
     public function __construct(OrdersInteractor $ordersInteractor){
@@ -122,6 +122,55 @@ class OrdersController{
             }
         }
 
+        $response->getBody()->write(json_encode($res));
+        return $response->withStatus($respCode);
+    }
+
+    public function buyItem(Request $request, Response $response, $args)
+    {
+        $data = $request->getParsedBody();
+        $res = [];
+        $respCode = 200;
+
+        if (!$this->checkIntValue($args['id'])){
+            $res = ['error' => 'Wrong order id.'];
+            $respCode = 400;
+        }
+        else{
+            try{
+                $this->ordersInteractor->buyItem($data['user_id'], $args['id']);
+                $res = ['ok' => 'true'];
+            }
+            catch(Exception $ex){
+                $res = ['error' => $ex->getMessage()];
+                $respCode = 400;
+            }
+        }
+
+        $response->getBody()->write(json_encode($res));
+        return $response->withStatus($respCode);
+    }
+    public function sellItem(Request $request, Response $response, $args)
+    {
+        $data = $request->getParsedBody();
+        $res = [];
+        $respCode = 200;
+
+        if (!$this->checkIntValue($args['id'])){
+            $res = ['error' => 'Wrong order id.'];
+            $respCode = 400;
+        }
+        else{
+            try{
+                $this->ordersInteractor->sellItem($data['user_id'], $args['id']);
+                $res = ['ok' => 'true'];
+            }
+            catch(Exception $ex){
+                $res = ['error' => $ex->getMessage()];
+                $respCode = 400;
+            }
+        }
+        
         $response->getBody()->write(json_encode($res));
         return $response->withStatus($respCode);
     }

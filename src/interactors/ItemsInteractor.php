@@ -8,7 +8,12 @@ class ItemsInteractor{
     }
     
     // Создать тип предмета 
-    public function createItemType($name){
+    public function createItemType($requesterId, $name){
+        $requester = $this->repository->getUserById($requesterId);
+        if ($requester->getRole()->getRole() !== UserRole::$ADMIN){
+            throw new Exception('User have not enough permissions.');
+        }
+
         $it = $this->repository->getItemTypeByName($name);
 
         if (!empty($it)){

@@ -55,33 +55,33 @@ $container['UsersInteractor'] = function ($container) {
     return new UsersInteractor($container->get('repository'));
 };
 
-$container['AuthController'] = function ($container) {
-    return new AuthController(
+$container['AuthPresenter'] = function ($container) {
+    return new AuthPresenter(
         $container->get('AuthInteractor')
     );
 };
-$container['ExchangeController'] = function ($container) {
-    return new ExchangeController(
+$container['ExchangePresenter'] = function ($container) {
+    return new ExchangePresenter(
         $container->get('ExchangeInteractor')
     );
 };
-$container['ItemsController'] = function ($container) {
-    return new ItemsController(
+$container['ItemsPresenter'] = function ($container) {
+    return new ItemsPresenter(
         $container->get('ItemsInteractor')
     );
 };
-$container['OrdersController'] = function ($container) {
-    return new OrdersController(
+$container['OrdersPresenter'] = function ($container) {
+    return new OrdersPresenter(
         $container->get('OrdersInteractor')
     );
 };
-$container['TopController'] = function ($container) {
-    return new TopController(        
+$container['TopPresenter'] = function ($container) {
+    return new TopPresenter(        
         $container->get('TopInteractor')
     );
 };
-$container['UsersController'] = function ($container) {
-    return new UsersController(
+$container['UsersPresenter'] = function ($container) {
+    return new UsersPresenter(
         $container->get('UsersInteractor')
     );
 };

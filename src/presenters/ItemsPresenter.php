@@ -3,7 +3,7 @@
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
-class ItemsController{
+class ItemsPresenter{
     private $itemsInteractor;
     
     public function __construct(ItemsInteractor $itemsInteractor){
@@ -96,7 +96,7 @@ class ItemsController{
         }
         else{
             try{
-                $this->itemsInteractor->createItemType($data['name']);
+                $this->itemsInteractor->createItemType($data['user_id'], $data['name']);
                 $res = ['ok' => 'true'];
             }
             catch(Exception $ex){

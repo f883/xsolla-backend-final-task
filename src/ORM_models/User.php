@@ -120,6 +120,14 @@ class User
     public function addItem($item){
         $this->items[] = $item;
     }
+    public function removeItem($itemId){
+        foreach($this->items as $item){
+            if ($item->getId() == $itemId){
+                unset($item);
+                break;
+            }
+        }
+    }
     public function getItems(){
         return $this->items;
         // return $this->items->toArray();

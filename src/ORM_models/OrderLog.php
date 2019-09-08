@@ -50,6 +50,14 @@ class OrderLog
     {
         $this->date = $value;
     }
+    public function getOrder()
+    {
+        return $this->order;
+    }
+    public function setOrder($value)
+    {
+        $this->order = $value;
+    }
     public function getExchangeEarn()
     {
         return $this->exchangeEarn;

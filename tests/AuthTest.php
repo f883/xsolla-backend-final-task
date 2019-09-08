@@ -22,21 +22,21 @@ class AuthTestCase extends TestCase
         (new Router())->commit($this->app);
     }
 
-    public function requestFactory()
-    {
-        $env = Environment::mock();
-        $uri = Uri::createFromString('https://example.com:443/foo/bar?abc=123');
-        $headers = Headers::createFromEnvironment($env);
-        $cookies = [
-            'user' => 'john',
-            'id' => '123',
-        ];
-        $serverParams = $env->all();
-        $body = new RequestBody();
-        $uploadedFiles = UploadedFile::createFromEnvironment($env);
-        $request = new Request('GET', $uri, $headers, $cookies, $serverParams, $body, $uploadedFiles);
-        return $request;
-    }
+    // public function requestFactory()
+    // {
+    //     $env = Environment::mock();
+    //     $uri = Uri::createFromString('https://example.com:443/foo/bar?abc=123');
+    //     $headers = Headers::createFromEnvironment($env);
+    //     $cookies = [
+    //         'user' => 'john',
+    //         'id' => '123',
+    //     ];
+    //     $serverParams = $env->all();
+    //     $body = new RequestBody();
+    //     $uploadedFiles = UploadedFile::createFromEnvironment($env);
+    //     $request = new Request('GET', $uri, $headers, $cookies, $serverParams, $body, $uploadedFiles);
+    //     return $request;
+    // }
 
     // public function testRegister() {
         // $env = Environment::mock([
@@ -56,26 +56,22 @@ class AuthTestCase extends TestCase
     // } 
 
     public function testRegister() {
+        // create our http client (Guzzle)
+        $client = new Client('http://localhost:8000', array(
+            'request.options' => array(
+                'exceptions' => false,
+            )
+        ));
 
-        $request = $this->requestFactory();
-        $request->write(json_encode([ 'hello' => 'world' ]));
-        $request->getBody()->rewind();
+        $nickname = 'ObjectOrienter'.rand(0, 999);
+        $data = array(
+            'nickname' => $nickname,
+            'avatarNumber' => 5,
+            'tagLine' => 'a test dev!'
+        );
 
-        $request = $request->withHeader('Content-Type', 'application/json');
-        $request = $request->withMethod('POST');
-
-        $app = new App();
-        $path = '/api/auth/register';
-        $callable = function ($req, $res) {
-            return $res->write($req->getParsedBody['hello']);
-        };
-
-        $app->get($path, $callable);
-
-        $resOut = $app($request, new Response());
-        $resOut->getBody()->rewind();
-
-        $this->assertEquals('world', $resOut->getBody()->getContents());
+        $request = $client->post('/api/programmers', null, json_encode($data));
+        $response = $request->send();
     } 
 
     /*

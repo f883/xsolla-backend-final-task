@@ -59,6 +59,10 @@ class Item
     {
         return $this->sellCount;
     }
+    public function setSellCount($sc)
+    {
+        $this->sellCount = $sc;
+    }
     public function setDescription($description)
     {
         $this->description = $description;

@@ -9,14 +9,84 @@ class OrdersInteractor{
 
     // Купить товар по ордеру
     public function buyItem($userId, $orderId){
-        // TODO: buyItem
+        $order = $this->repository->getOrderById($orderId);
+        if ($order->getType()->getValue() != OrderType::$SELL){
+            throw new Exception('Wrong order type.');          
+        }
+        if ($order->getStatus()->getValue() != OrderStatus::$ACTIVE){
+            throw new Exception('Wrong order status.');          
+        }
+        $item = $order->getItem();
+        $seller = $order->getOwner();
+        $buyer = $this->repository->getUserById($userId);
+        if ($buyer->getBalance() < $order->getPrice()){
+            throw new Exception('Buyer has not enough money.');          
+        }
+        $exchange = $this->repository->getExchange();
+        $fee = $order->getPrice()*$exchange->getFee();
+        $seller->setBalance($seller->getBalance() + $order->getPrice() - $fee);
+        $exchange->setBalance($exchange->getBalance() + $fee);
+        $buyer->setBalance($buyer->getBalance() - $order->getPrice());
+        $item->setOwner($buyer);
+        $order->setStatus($this->repository->getOrderStatusByNameCreateIfNotExists(OrderStatus::$SOLD));
+        $order->setClosed(new DataTime());
+        $order->setSecondMember($buyer);
+        $item->incrementSellCount();
 
+        $log = new OrderLog();
+        $log->setDate(new DataTime());
+        $log->setExchangeEarn($fee);
+        $log->setOrder($order);
+        $this->repository->saveEntity($log);
+        $this->repository->saveEntity($buyer);
+        $this->repository->saveEntity($seller);
+        $this->repository->saveEntity($order);
+        $this->repository->saveEntity($exchange);
     } 
 
     // Продать товар по ордеру
     public function sellItem($userId, $orderId){
-        // TODO: sellItem
+        $order = $this->repository->getOrderById($orderId);
 
+        if ($order->getType()->getValue() != OrderType::$BUY){
+            throw new Exception('Wrong order type.');          
+        }
+        if ($order->getStatus()->getValue() != OrderStatus::$ACTIVE){
+            throw new Exception('Wrong order status.');          
+        }
+        $item = $order->getItem();
+        $buyer = $order->getOwner();
+        $seller = $this->repository->getUserById($userId);
+
+        if ($item->getOwner()->getId() != $seller->getId()){
+            throw new Exception('Seller is not the owner of the item.');          
+        }
+
+        if ($buyer->getBalance() < $order->getPrice()){
+            throw new Exception('Buyer has not enough money.');          
+        }
+        $exchange = $this->repository->getExchange();
+        
+        $fee = $order->getPrice()*$exchange->getFee();
+        $seller->setBalance($seller->getBalance() + $order->getPrice() - $fee);
+        $exchange->setBalance($exchange->getBalance() + $fee);
+
+        $buyer->setBalance($buyer->getBalance() - $order->getPrice());
+        $item->setOwner($buyer);
+        $order->setStatus($this->repository->getOrderStatusByNameCreateIfNotExists(OrderStatus::$SOLD));
+        $order->setSecondMember($buyer);
+        $order->setClosed(new DataTime());
+        $item->incrementSellCount();
+
+        $log = new OrderLog();
+        $log->setDate(new DataTime());
+        $log->setExchangeEarn($fee);
+        $log->setOrder($order);
+        $this->repository->saveEntity($log);
+        $this->repository->saveEntity($buyer);
+        $this->repository->saveEntity($seller);
+        $this->repository->saveEntity($order);
+        $this->repository->saveEntity($exchange);
     } 
 
     // Создать ордера на продажу
@@ -53,9 +123,6 @@ class OrdersInteractor{
             throw new Exception('Item not found.');
         }
         $user = $this->repository->getUserById($userId);
-        if ($item->getOwner()->getId() != $user->getId()){
-            throw new Exception('User do not own this item.');
-        }
         
         $orderExists = $this->repository->getOrderByTypeAndItemId(OrderType::$BUY, $itemId);
         if (!empty($orderExists)){

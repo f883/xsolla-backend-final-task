@@ -50,7 +50,12 @@ class UsersInteractor{
     } 
 
     // Начислить предмет пользователю
-    public function depositItem($userId, $itemTypeId){
+    public function depositItem($requesterId, $userId, $itemTypeId){
+        $requester = $this->repository->getUserById($requesterId);
+        if ($requester->getRole()->getRole() !== UserRole::$ADMIN){
+            throw new Exception('User have not enough permissions.');
+        }
+
         $user = $this->repository->getUserById($userId);
 
         if (empty($user)){

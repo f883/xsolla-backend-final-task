@@ -3,7 +3,7 @@
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
-class ExchangeController{
+class ExchangePresenter{
     private $exchangeInteractor;
 
     public function __construct(ExchangeInteractor $exchangeInteractor){
@@ -45,7 +45,7 @@ class ExchangeController{
                 $respCode = 400;
             }
             else{
-                if ($this->exchangeInteractor->setExchangeFee($fee)){
+                if ($this->exchangeInteractor->setExchangeFee($data['user_id'], $fee)){
                     $res = ['ok' => 'true'];
                 }
                 else{
@@ -61,9 +61,10 @@ class ExchangeController{
 
     public function getBalance(Request $request, Response $response, $args)
     {
+        $data = $request->getParsedBody();
         $res = [
             'ok' => 'true',
-            'balance' => $this->exchangeInteractor->getExchangeBalance()
+            'balance' => $this->exchangeInteractor->getExchangeBalance($data['user_id'])
         ];
 
         $response->getBody()->write(json_encode($res));
@@ -101,7 +102,7 @@ class ExchangeController{
                         }
                         else{
                             $res = [
-                                'earn' => $this->exchangeInteractor->getEarn($fromDate, $toDate),
+                                'earn' => $this->exchangeInteractor->getEarn($data['user_id'], $fromDate, $toDate),
                                 'from_date' => $fromDate->format('d-m-Y'),
                                 'to_date' => $toDate->format('d-m-Y')
                             ];
@@ -140,7 +141,7 @@ class ExchangeController{
             else{
                 if ($this->checkIntValue($userId)){
                     try{
-                        $balance = $this->exchangeInteractor->depositMoney($userId, $value);
+                        $balance = $this->exchangeInteractor->depositMoney($data['user_id'], $userId, $value);
                         $res = ['ok' => 'true', 'balance' => $balance];
                     }
                     catch(Exception $ex){
@@ -179,7 +180,7 @@ class ExchangeController{
             else{
                 if ($this->checkIntValue($userId)){
                     try{
-                        $balance = $this->exchangeInteractor->withdrawMoney($userId, $value);
+                        $balance = $this->exchangeInteractor->withdrawMoney($data['user_id'], $userId, $value);
                         $res = ['ok' => 'true', 'balance' => $balance];
                     }
                     catch(Exception $ex){

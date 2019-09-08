@@ -3,7 +3,7 @@
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
-class UsersController{
+class UsersPresenter{
     private $usersInteractor;
 
     public function __construct(UsersInteractor $usersInteractor){
@@ -34,7 +34,7 @@ class UsersController{
                 }
                 else{
                     try{
-                        $success = $this->usersInteractor->depositItem($userId, $data['item_type_id']);
+                        $success = $this->usersInteractor->depositItem($data['user_id'], $userId, $data['item_type_id']);
                         if ($success){
                             $res = ['ok' => 'true'];
                         }

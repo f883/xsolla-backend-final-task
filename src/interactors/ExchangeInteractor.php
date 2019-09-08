@@ -8,7 +8,12 @@ class ExchangeInteractor{
     }
 
     // Получить выручку биржи за определённый период
-    public function getEarn($fromDate, $toDate){
+    public function getEarn($requesterId, $fromDate, $toDate){
+        $requester = $this->repository->getUserById($requesterId);
+        if ($requester->getRole()->getRole() !== UserRole::$ADMIN){
+            throw new Exception('User have not enough permissions.');
+        }
+
         if ($toDate < $fromDate){
             throw new Exception('ToDate is less than FromDate');
         }
@@ -24,7 +29,12 @@ class ExchangeInteractor{
     } 
     
     // Изменить комиссию на торговой площадке
-    public function setExchangeFee($value){
+    public function setExchangeFee($requesterId, $value){
+        $requester = $this->repository->getUserById($requesterId);
+        if ($requester->getRole()->getRole() !== UserRole::$ADMIN){
+            throw new Exception('User have not enough permissions.');
+        }
+
         $exchange = $this->repository->getExchange();
         $exchange->setFee($value);
         $this->repository->saveEntity($exchange);
@@ -32,13 +42,23 @@ class ExchangeInteractor{
     } 
 
     // Получить баланс торговой площадки
-    public function getExchangeBalance(){
+    public function getExchangeBalance($requesterId){
+        $requester = $this->repository->getUserById($requesterId);
+        if ($requester->getRole()->getRole() !== UserRole::$ADMIN){
+            throw new Exception('User have not enough permissions.');
+        }
+
         $exchange = $this->repository->getExchange();
         return $exchange->getBalance();
     } 
 
     // Пополнить баланс пользователя
-    public function depositMoney($userId, $value){
+    public function depositMoney($requesterId, $userId, $value){
+        $requester = $this->repository->getUserById($requesterId);
+        if ($requester->getRole()->getRole() !== UserRole::$ADMIN){
+            throw new Exception('User have not enough permissions.');
+        }
+
         $user = $this->repository->getUserById($userId);
 
         if (empty($user)){
@@ -53,7 +73,12 @@ class ExchangeInteractor{
     }
 
     // Списать с баланса пользователя
-    public function withdrawMoney($userId, $value){
+    public function withdrawMoney($requesterId, $userId, $value){
+        $requester = $this->repository->getUserById($requesterId);
+        if ($requester->getRole()->getRole() !== UserRole::$ADMIN){
+            throw new Exception('User have not enough permissions.');
+        }
+
         $user = $this->repository->getUserById($userId);
 
         if (empty($user)){

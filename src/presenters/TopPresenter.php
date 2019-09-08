@@ -3,7 +3,7 @@
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
-class TopController{
+class TopPresenter{
     private $topInteractor;
 
     public function __construct(TopInteractor $topInteractor){
