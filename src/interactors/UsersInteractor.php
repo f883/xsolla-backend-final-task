@@ -1,6 +1,6 @@
 <?php
 
-class UserInteractor{
+class UsersInteractor{
     private $repository;
     
     public function __construct(Repository $repository){
@@ -48,6 +48,26 @@ class UserInteractor{
 
         return $res;
     } 
+
+    // Начислить предмет пользователю
+    public function depositItem($userId, $itemTypeId){
+        $user = $this->repository->getUserById($userId);
+
+        if (empty($user)){
+            throw new Exception('User not found.');
+        }
+        
+        $itemType = $this->repository->getItemTypeById($itemTypeId);
+
+        if (empty($itemType)){
+            throw new Exception('Item type not found.');
+        }
+
+        $item = new Item($itemType);
+        $item->setOwner($user);
+        $this->repository->saveEntity($item);
+        return true;
+    }
 
     public function checkAdminAccess($userId){
         $user = $this->repository->getUserById($userId);

@@ -122,6 +122,7 @@ class User
     }
     public function getItems(){
         return $this->items;
+        // return $this->items->toArray();
     }
 
     public function getAccessTokenHash()

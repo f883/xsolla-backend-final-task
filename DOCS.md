@@ -277,7 +277,9 @@ GET `/api/items/types`
 GET `/api/items/types/{id}`
 
 Пример запроса:
+
 `http://192.168.1.111:8000/api/items/types/23`
+
 ```
 {
 	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM"
@@ -297,7 +299,9 @@ GET `/api/items/types/{id}`
 GET `/api/items/`
 
 Пример запроса:
+
 `http://192.168.1.111:8000/api/items/`
+
 ```
 {
 	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM"
@@ -345,12 +349,22 @@ GET `/api/items/{id}`
 POST `/api/items/types`
 
 Пример запроса:
-```
 
+`http://192.168.1.111:8000/api/items/types`
+
+```
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM",
+	"data": {
+		"name": "test_item"
+	}
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true"
+}
 ```
 
 ## Предложения на продажу и покупку
@@ -358,78 +372,175 @@ POST `/api/items/types`
 GET `/api/orders/buy`
 
 Пример запроса:
-```
 
+`http://192.168.1.111:8000/api/orders/buy`
+
+```
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDAiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.KB1cuzaozJcPeU23GfELeiFfXXUaJwt5OcI6fRO-QgQ"
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true",
+  "buy_orders": [
+    {
+      "id": 14,
+      "owner": 40,
+      "item": 20,
+      "created": {
+        "date": "2019-09-08 05:51:24.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+      },
+      "type": "BUY"
+    },
+    {
+      "id": 15,
+      "owner": 40,
+      "item": 21,
+      "created": {
+        "date": "2019-09-08 05:51:36.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+      },
+      "type": "BUY"
+    }
+  ]
+}
 ```
 
 ### Добавить своё предложение на покупку
 POST `/api/orders/buy`
 
 Пример запроса:
+
+`http://192.168.1.111:8000/api/orders/buy`
+
 ```
 {
-	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDAiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3NjQxNjAwLCJuYmYiOjE1Njc2NDE2MDAsImV4cCI6MTU2NzcyODAwMH0.82CKuNOA3RG3FktNcxxPqde6CzKK3Hc0ON7UywyGy7I",
-	"data":{
-		"item_id" : "20",
-		"price" : "28"
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDAiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.KB1cuzaozJcPeU23GfELeiFfXXUaJwt5OcI6fRO-QgQ",
+	"data" : {
+		"item_id" : "21",
+		"price" : "551"
 	}
 }
 ```
 Ответ:
 ```
-
+{
+  "ok": "true",
+  "order_id": 15
+}
 ```
 
 ### Получить список предложений на продажу
 GET `/api/orders/sell`
 
 Пример запроса:
-```
 
+`http://192.168.1.111:8000/api/orders/sell`
+
+```
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDAiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.KB1cuzaozJcPeU23GfELeiFfXXUaJwt5OcI6fRO-QgQ"
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true",
+  "sell_orders": [
+    {
+      "id": 16,
+      "owner": 40,
+      "item": 21,
+      "created": {
+        "date": "2019-09-08 05:52:26.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+      },
+      "type": "SELL"
+    },
+    {
+      "id": 17,
+      "owner": 40,
+      "item": 20,
+      "created": {
+        "date": "2019-09-08 06:15:50.000000",
+        "timezone_type": 3,
+        "timezone": "UTC"
+      },
+      "type": "SELL"
+    }
+  ]
+}
 ```
 
 ### Добавить своё предложение на продажу
 POST `/api/orders/sell`
 
 Пример запроса:
-```
 
+`http://192.168.1.111:8000/api/orders/sell`
+
+```
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDAiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.KB1cuzaozJcPeU23GfELeiFfXXUaJwt5OcI6fRO-QgQ",
+	"data" : {
+		"item_id" : "20",
+		"price" : "551"
+	}
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true",
+  "order_id": 17
+}
 ```
 
 ### Изменить существующее предложение
 PUT `/api/orders/{id}`
 
 Пример запроса:
-```
 
+`http://192.168.1.111:8000/api/orders/17`
+
+```
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDAiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.DHTTMC8yJlujeDHjXfuoOO6415IQVLcy-O5GL1GV3Do",
+	"data" : {
+		"price" : "221"
+	}
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true"
+}
 ```
 
 ### Отменить предложение (Предложение переходит в список отменённых. Удаления не происходит)
 DELETE `/api/orders/{id}`
 
 Пример запроса:
-```
 
+`http://192.168.1.111:8000/api/orders/17`
+
+```
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDAiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.DHTTMC8yJlujeDHjXfuoOO6415IQVLcy-O5GL1GV3Do"
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true"
+}
 ```
 
 
@@ -438,24 +549,58 @@ DELETE `/api/orders/{id}`
 GET `/api/top/users`
 
 Пример запроса:
-```
 
+`http://192.168.1.111:8000/api/top/users`
+
+```
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM",
+		"filter" : "items"
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true",
+  "users": {
+    "40": 2,
+    "43": 0,
+    "39": 0,
+    "41": 0,
+    "42": 0
+  }
+}
 ```
 
 ### Список вещей по популярности
 GET `/api/top/items`
 
 Пример запроса:
-```
 
+`http://192.168.1.111:8000/api/top/items`
+
+```
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM"
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true",
+  "items": [
+    {
+      "id": 20,
+      "owner": 40,
+      "sell count": 0
+    },
+    {
+      "id": 21,
+      "owner": 40,
+      "sell count": 0
+    }
+  ]
+}
 ```
 
 
@@ -464,34 +609,61 @@ GET `/api/top/items`
 GET `/api/users/{id}`
 
 Пример запроса:
-```
 
+`http://192.168.1.111:8000/api/users/40`
+
+```
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM"
+}
 ```
 Ответ:
 ```
-
+{
+  "name": "qwe",
+  "balance": 0,
+  "items": {}
+}
 ```
 
 ### Добавить предмет заданного типа пользователю
 POST `/api/users/{id}/items`
 
 Пример запроса:
-```
 
+`http://192.168.1.111:8000/api/users/40/items`
+
+```
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM",
+	"data" : {
+		"item_type_id" : "23"
+	}
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true"
+}
 ```
 
 ### Получить историю действий пользователя
 GET `/api/users/{id}/history`
 
 Пример запроса:
-```
 
+`http://192.168.1.111:8000/api/users/40/history`
+
+```
+{
+	"access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoiYWNjZXNzX3Rva2VuIiwidXNlcklkIjoiNDMiLCJpc3MiOiJodHRwOlwvXC9leGFtcGxlLm9yZyIsImF1ZCI6Imh0dHA6XC9cL2V4YW1wbGUuY29tIiwiaWF0IjoxNTY3OTAwODAwLCJuYmYiOjE1Njc5MDA4MDAsImV4cCI6MTU2Nzk4NzIwMH0.h03DSt2wnfm0vjldU-ravc2fd8X6y8tQAbj3N0YixbM"
+}
 ```
 Ответ:
 ```
-
+{
+  "ok": "true",
+  "orders": []
+}
 ```

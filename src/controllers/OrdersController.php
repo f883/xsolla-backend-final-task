@@ -9,7 +9,7 @@ class OrdersController{
     public function __construct(OrdersInteractor $ordersInteractor){
         $this->ordersInteractor = $ordersInteractor;
     }    
-    public function getOrdersToBuy(Request $request, Response $response, $args)
+    public function getOrdersToSell(Request $request, Response $response, $args)
     {
         $data = $request->getParsedBody();
         $res = [];
@@ -18,9 +18,38 @@ class OrdersController{
             $data['filter'] = [];
         }
         $orders = $this->ordersInteractor->getSalesList($data['filter']);
-        $res = ['ok' => 'true', 'sell_orders' => $orders];
+        $res = ['ok' => 'true', 'sell_orders' => $this->mapOrders($orders)];
         $response->getBody()->write(json_encode($res));
         return $response->withStatus($respCode);
+    }
+    public function getOrdersToBuy(Request $request, Response $response, $args)
+    {
+        $data = $request->getParsedBody();
+        $res = [];
+        $respCode = 200;
+        if (empty($data['filter'])){
+            $data['filter'] = [];
+        }
+        $orders = $this->ordersInteractor->getBuysList($data['filter']);
+        $res = ['ok' => 'true', 'buy_orders' => $this->mapOrders($orders)];
+        $response->getBody()->write(json_encode($res));
+        return $response->withStatus($respCode);
+    }
+
+    private function mapOrders($orders){
+        $res = [];
+
+        foreach ($orders as $order){
+            $res[] = [
+                'id' => $order->getId(),
+                'owner' => $order->getOwner()->getId(),
+                'item' => $order->getItem()->getId(),
+                'created' => $order->getCreated(),
+                'type' => $order->getType()->getValue()
+            ];
+        }
+
+        return $res;
     }
 
     public function postOrderToBuy(Request $request, Response $response, $args)
@@ -56,20 +85,6 @@ class OrdersController{
             }
         }
 
-        $response->getBody()->write(json_encode($res));
-        return $response->withStatus($respCode);
-    }
-
-    public function getOrdersToSell(Request $request, Response $response, $args)
-    {
-        $data = $request->getParsedBody();
-        $res = [];
-        $respCode = 200;
-        if (empty($data['filter'])){
-            $data['filter'] = [];
-        }
-        $orders = $this->ordersInteractor->getBuysList($data['filter']);
-        $res = ['ok' => 'true', 'buy_orders' => $orders];
         $response->getBody()->write(json_encode($res));
         return $response->withStatus($respCode);
     }
@@ -132,7 +147,8 @@ class OrdersController{
             if ($changes){
                 try
                 {
-                    $this->ordersInteractor->updateOrder($args['id'], $price);
+                    $this->ordersInteractor->updateOrder($data['user_id'], $args['id'], $price);
+                    $res = ['ok' => 'true'];
                 }
                 catch(Exception $ex){                
                     $res = ['error' => $ex->getMessage()];
@@ -160,7 +176,7 @@ class OrdersController{
         }
         else{
             try{
-                $this->ordersInteractor->cancellOrder($args['id']);
+                $this->ordersInteractor->cancellOrder($data['user_id'], $args['id']);
                 $res = ['ok' => 'true'];
             }
             catch(Exception $ex){                

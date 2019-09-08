@@ -9,49 +9,6 @@ class ExchangeController{
     public function __construct(ExchangeInteractor $exchangeInteractor){
         $this->exchangeInteractor = $exchangeInteractor;
     }
-    
-    public function addItemToUser(Request $request, Response $response, $args)
-    {
-        $data = $request->getParsedBody();
-        $respCode = 200;
-        
-        $res = [];
-        $userId = $args['id'];
-        if (empty($data['item_type_id'])){
-            $respCode = 400;
-            $res = ['error' => 'Field [item_type_id] not found.'];
-        }
-        else {
-            if (!$this->checkIntValue($data['item_type_id'])){
-                $respCode = 400;
-                $res = ['error' => 'Wrong [item_type_id] value.'];
-            }
-            else{
-                if (!$this->checkIntValue($userId)){
-                    $respCode = 400;
-                    $res = ['error' => 'Wrong user id.'];
-                }
-                else{
-                    try{
-                        $success = $this->exchangeInteractor->depositItem($userId, $data['item_type_id']);
-                        if ($success){
-                            $res = ['ok' => 'true'];
-                        }
-                        else{
-                            $res = ['ok' => 'false'];
-                        }
-                    }
-                    catch(Exception $ex){
-                        $respCode = 400;
-                        $res = ['error' => $ex->getMessage()];
-                    }
-                }
-            }
-        }
-
-        $response->getBody()->write(json_encode($res));
-        return $response->withStatus($respCode);
-    }
 
     public function getStatus(Request $request, Response $response, $args)
     {

@@ -125,19 +125,26 @@ class Repository{
             []
         );
     }
-    public function getOrdersByType($type){
+    public function getOrdersByType($typeValue){
+        $type = $this->entityManager->getRepository('OrderType')
+        ->findOneBy(
+            ['value' => $typeValue]
+        );
+
         return $this->entityManager->getRepository('Order')
         ->findBy(
-            ['type' => $type]
+            ['type' => $type->getId()]
         );
     }
     public function getOrderById($id){
         return $this->entityManager->getRepository('Order')
-        ->findBy(
-            ['type' => $type]
+        ->findOneBy(
+            ['id' => $id]
         );
     }
-    public function getOrderByTypeAndItemId($type, $itemId){
+    public function getOrderByTypeAndItemId($typeDescription, $itemId){
+        $type = $this->getOrderTypeByNameCreateIfNotExists($typeDescription);
+        
         return $this->entityManager->getRepository('Order')
         ->findOneBy(
            ['item' => $itemId, 'type' => $type]
@@ -154,5 +161,31 @@ class Repository{
         ->findOneBy(
             ['name' => $name]
         );
+    }
+    public function getOrderStatusByNameCreateIfNotExists($status){
+        $os = $this->entityManager->getRepository('OrderStatus')
+        ->findOneBy(
+            ['value' => $status]
+        );
+
+        if (empty($os)){
+            $os = new OrderStatus();
+            $os->setValue($status);
+            $this->saveEntity($os);
+        }
+        return $os;
+    }
+    public function getOrderTypeByNameCreateIfNotExists($type){
+        $tp = $this->entityManager->getRepository('OrderType')
+        ->findOneBy(
+            ['value' => $type]
+        );
+
+        if (empty($tp)){
+            $tp = new OrderType();
+            $tp->setValue($type);
+            $this->saveEntity($tp);
+        }
+        return $tp;
     }
 }

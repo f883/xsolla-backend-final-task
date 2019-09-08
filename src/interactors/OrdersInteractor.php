@@ -26,6 +26,10 @@ class OrdersInteractor{
             throw new Exception('Item not found.');
         }
         $user = $this->repository->getUserById($userId);
+        if ($item->getOwner()->getId() !== $user->getId()){
+            throw new Exception('User do not own this item.');
+        }
+
         $orderExists = $this->repository->getOrderByTypeAndItemId(OrderType::$SELL, $itemId);
         if (!empty($orderExists)){
             throw new Exception('Order type [SELL] with item [' . $itemId . '] already exists.');
@@ -36,19 +40,23 @@ class OrdersInteractor{
         $order->setItem($item);
         $order->setPrice($price);
         $order->setOwner($user);
-        $order->setStatus(UserModel::$ORDER_STATUS_ACTIVE);
-        $order->setType(OrderType::$SELL);
+        $order->setStatus($this->repository->getOrderStatusByNameCreateIfNotExists(OrderStatus::$ACTIVE));
+        $order->setType($this->repository->getOrderTypeByNameCreateIfNotExists(OrderType::$SELL));
         $this->repository->saveEntity($order);
         return $order->getId();
     }
 
     // Создать ордера на покупку
-    public function postBuyOrder($item, $userId, $price){
+    public function postBuyOrder($itemId, $userId, $price){
         $item = $this->repository->getItemById($itemId);
         if (empty($item)){
             throw new Exception('Item not found.');
         }
         $user = $this->repository->getUserById($userId);
+        if ($item->getOwner()->getId() != $user->getId()){
+            throw new Exception('User do not own this item.');
+        }
+        
         $orderExists = $this->repository->getOrderByTypeAndItemId(OrderType::$BUY, $itemId);
         if (!empty($orderExists)){
             throw new Exception('Order type [BUY] with item [' . $itemId . '] already exists.');
@@ -59,34 +67,39 @@ class OrdersInteractor{
         $order->setItem($item);
         $order->setPrice($price);
         $order->setOwner($user);
-        $order->setStatus(UserModel::$ORDER_STATUS_ACTIVE);
-        $order->setType(OrderType::$BUY);
+        $order->setStatus($this->repository->getOrderStatusByNameCreateIfNotExists(OrderStatus::$ACTIVE));
+        $order->setType($this->repository->getOrderTypeByNameCreateIfNotExists(OrderType::$BUY));
         $this->repository->saveEntity($order);
         return $order->getId();
     } 
 
     // Отменить ордер
-    public function cancellOrder($orderId){
-        if (!is_numeric($price)){
-            throw new Exception('Price should be a number.');
-        }
+    public function cancellOrder($userId, $orderId){
         $order = $this->repository->getOrderById($orderId);
         if (empty($order)){
             throw new Exception('Order not found.');
         }
 
-        $order->setStatus(UserModel::$ORDER_STATUS_CANCELLED);
+        if ($order->getOwner()->getId() != $userId){
+            throw new Exception('User have no permissions.');
+        }
+
+        $order->setStatus($this->repository->getOrderStatusByNameCreateIfNotExists(OrderStatus::$CANCELLED));
         $this->repository->saveEntity($order);
     } 
 
     // Обновить ордер
-    public function updateOrder($orderId, $price){
+    public function updateOrder($userId, $orderId, $price){
         if (!is_numeric($price)){
             throw new Exception('Price should be a number.');
         }
         $order = $this->repository->getOrderById($orderId);
         if (empty($order)){
             throw new Exception('Order not found.');
+        }
+
+        if ($order->getOwner()->getId() != $userId){
+            throw new Exception('User have no permissions.');
         }
 
         $order->setPrice($price);

@@ -26,22 +26,23 @@ class TopController{
     // по количеству денег, по количеству товаров
     public function getTopUsers(Request $request, Response $response, $args)
     {
+        $respCode = 200; 
         $data = $request->getParsedBody();
         $res = [];
 
         if (empty($data['filter'])){
-            $res = ['error' => 'Filter not set.'];
+            $data['filter'] = 'items';
+            // $res = ['error' => 'Filter not set.'];
+            // $respCode = 400; 
         }
-        else{
-            $users = $this->topInteractor->getTopUsers($data['filter']);
-    
-            $res = [
-                'ok' => 'true',
-                'users' => $users
-            ];
-        }
+        $users = $this->topInteractor->getTopUsers($data['filter']);
+
+        $res = [
+            'ok' => 'true',
+            'users' => $users
+        ];
 
         $response->getBody()->write(json_encode($res));
-        return $response->withStatus(200);
+        return $response->withStatus($respCode);
     }
 }

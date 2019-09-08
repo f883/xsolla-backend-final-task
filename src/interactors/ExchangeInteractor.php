@@ -31,26 +31,6 @@ class ExchangeInteractor{
         return true;
     } 
 
-    // Начислить предмет пользователю
-    public function depositItem($userId, $itemTypeId){
-        $user = $this->getUserById($userId);
-
-        if (empty($user)){
-            throw new Exception('User not found.');
-        }
-        
-        $itemType = $this->repository->getItemTypeById($itemTypeId);
-
-        if (empty($itemType)){
-            throw new Exception('Item type not found.');
-        }
-
-        $item = new Item($itemType);
-        $item->setOwner($user);
-        $this->repository->saveEntity($item);
-        return true;
-    }
-
     // Получить баланс торговой площадки
     public function getExchangeBalance(){
         $exchange = $this->repository->getExchange();
